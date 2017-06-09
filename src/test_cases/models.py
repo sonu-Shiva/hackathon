@@ -44,8 +44,8 @@ class Action(models.Model):
     use_case = models.ForeignKey(UseCase)
     description = models.TextField(blank=False, verbose_name='Description', help_text='A description of this Action')
     action = models.CharField(choices=ACTION_CHOICES, blank=False, max_length=255)
-    locators = models.CharField(choices=LOCATORS_CHOICES, blank=False, max_length=255)
-    element_identifier = models.CharField(max_length=1024, blank=False)
+    locators = models.CharField(choices=LOCATORS_CHOICES, blank=True, max_length=255)
+    element_identifier = models.CharField(max_length=1024, blank=True)
     element_value = models.CharField(max_length=1024, blank=True)
 
     def __str__(self):
