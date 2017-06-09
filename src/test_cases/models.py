@@ -9,7 +9,8 @@ ACTION_CHOICES = [
     ["EnterText", "Enter Text"],
     ["SelectFromDropDown", "Select From Drop Down"],
     ["SelectFromLookUp", "Select From Look Up"],
-    ["URL", "URL"]
+    ["URL", "URL"],
+    ["PAUSE", "PAUSE"]
 ]
 
 LOCATORS_CHOICES = [
@@ -50,3 +51,9 @@ class Action(models.Model):
 
     def __str__(self):
         return "%s - %s - %s" % (self.use_case.project.name, self.use_case.use_case_name, self.description)
+
+
+class Reports(models.Model):
+    use_case = models.ForeignKey(UseCase)
+    time = models.CharField(max_length=500, blank=True)
+    report = models.TextField()
