@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'hackathon_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hackathon_db',
-        'USER': 'hackathon',
-        'PASSWORD': 'hackathon',
-        'HOST': 'hackathon.cuuuwyhnfkj0.us-west-2.rds.amazonaws.com',
+        'NAME': 'local_db',
+        'USER': 'local_user',
+        'PASSWORD': 'local_password',
+        'HOST': 'localhost',
         'PORT': '5432',
     },
 }
