@@ -3,6 +3,7 @@
 <html>
     <head>
         <title>Code Less Automation!</title>
+<!--
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <link rel="shortcut icon" type="image/png" href="https://www.galepartners.com/static/imgs/gale-favicon.png">
@@ -10,13 +11,23 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+-->
+        <script src="{% static 'js/jquery-1.12.3.min.js' %}"></script>
+        <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/jquery.formset.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css" >
+        <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" type="text/css" >
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}" type="text/css" >
+        <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css" >
+
         {% block js %} {% endblock js %}
         {% block css %} {% endblock css %}
         {% block extrahead %} {% endblock extrahead %}
     </head>
     <body>
-        <nav class="navbar navbar-inverse">
-          <div class="container-fluid">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="navbar-position container">
             <div class="navbar-header">
               <a class="navbar-brand" href="#">Code Less Automation!</a>
             </div>
@@ -27,7 +38,7 @@
           </div>
         </nav>
         {% block header %} {% endblock header%}
-        <div class="container">
+        <div class="container frame">
             {% block body %} {% endblock body %}
         </div>
         {% block footer %} {% endblock footer%}
