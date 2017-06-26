@@ -19,7 +19,7 @@
                         <tr>
                             <td>
                                 <input class="usecase-ck" type="checkbox" id="{{ usecase.use_case_name.auto_id }}">
-                                <a href="{% url 'app:actions' project_id usecase.id %}"> {{ usecase.use_case_name }}</a>
+                                <a href="{% url 'qabot:actions' project_id usecase.id %}"> {{ usecase.use_case_name }}</a>
                             </td>
                             <td><a href="http://192.168.22.68:8080/CodeLessAutomation/Controller/?id={{ use_case.id }}" target='_blank'>Run</a></td>
                         </tr>
