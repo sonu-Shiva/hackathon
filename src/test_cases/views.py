@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Project, Reports
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 
 
 def project_view(request):
@@ -36,4 +37,11 @@ def add_project(request):
     name = request.POST['project_name']
     new_project = Project(name=name)
     new_project.save()
+    return HttpResponseRedirect('/qabot')
+
+
+def remove_project(request, proj_id):
+    """Remove project."""
+    remove_project = get_object_or_404(Project, pk=proj_id)
+    remove_project.delete()
     return HttpResponseRedirect('/qabot')
