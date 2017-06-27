@@ -29,7 +29,7 @@ public static void triggerSelenium(int usecase_id,String browser){
 	Date date = new Date();
 	String dateVar=date.toString();
 	//File f=new File("Reports");
-	 eReport=new ExtentReports("C://Users//sandeepraju//Desktop//Workplace//QA-BOT//Reports//ESFREPORT.html");
+	 eReport=new ExtentReports("C://Users//sandeepraju//Desktop//Workplace//QA-BOT//reports//ESFREPORT.html");
 	 testReport=eReport.startTest("UseCase");
 	WebDriver driver=null;
 	Helper h=new Helper();
@@ -50,12 +50,12 @@ public static void triggerSelenium(int usecase_id,String browser){
 			driver = new InternetExplorerDriver();
 		}
 		else if(browser.equalsIgnoreCase("Chrome")){
-			System.setProperty("webdriver.chrome.driver","C://Users//sandeepraju//Desktop//Workplace//CodeLessAutomation//Drivers//chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver","C://Users//sandeepraju//Desktop//Workplace//CodeLessAutomation//drivers//chromedriver.exe");
 			driver = new ChromeDriver();
 		}
     	
     	
-//     	System.setProperty("webdriver.chrome.driver","C://Users//sandeepraju//Desktop//Workplace//CodeLessAutomation//Drivers//chromedriver.exe");
+//     	System.setProperty("webdriver.chrome.driver","C://Users//sandeepraju//Desktop//Workplace//CodeLessAutomation//drivers//chromedriver.exe");
 //		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS) ;
