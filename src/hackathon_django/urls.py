@@ -19,5 +19,5 @@ from django.conf.urls import include
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^qabot/', include('test_cases.urls', namespace="qabot")),
+    url(r'^hakuna-matata/', include('test_cases.urls', namespace="hakuna_matata")),
 ]

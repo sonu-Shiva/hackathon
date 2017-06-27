@@ -2,16 +2,19 @@
 from __future__ import unicode_literals
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Project, Reports
+from .models import Project, Reports, ProjectForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.core.urlresolvers import reverse_lazy
 
 
 def project_view(request):
     """Get all project's."""
     projects = Project.objects.all()
+    form = ProjectForm()
     context = {
         "projects": projects,
+        "form": form,
     }
     return render(request, "index.html", context)
 
@@ -34,14 +37,15 @@ def render_report(request, report_id):
 
 def add_project(request):
     """Add new project."""
-    name = request.POST['project_name']
-    new_project = Project(name=name)
-    new_project.save()
-    return HttpResponseRedirect('/qabot')
+    if request.POST:
+        new_project = ProjectForm(request.POST)
+        if new_project.is_valid():
+            new_project.save()
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:projects'))
 
 
 def remove_project(request, proj_id):
     """Remove project."""
     remove_project = get_object_or_404(Project, pk=proj_id)
     remove_project.delete()
-    return HttpResponseRedirect('/qabot')
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:projects'))

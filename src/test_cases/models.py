@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django import forms
 
 
 ACTION_CHOICES = [
@@ -30,6 +31,13 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ProjectForm(forms.ModelForm):
+    """docstring for ProjectForm"""
+    class Meta:
+        model = Project
+        exclude = ()
 
 
 class UseCase(models.Model):
