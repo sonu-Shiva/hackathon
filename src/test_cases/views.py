@@ -44,8 +44,8 @@ def add_project(request):
     return HttpResponseRedirect(reverse_lazy('hakuna_matata:projects'))
 
 
-def remove_project(request, proj_id):
+def remove_project(request, project_id):
     """Remove project."""
-    remove_project = get_object_or_404(Project, pk=proj_id)
+    remove_project = get_object_or_404(Project, pk=project_id)
     remove_project.delete()
     return HttpResponseRedirect(reverse_lazy('hakuna_matata:projects'))
