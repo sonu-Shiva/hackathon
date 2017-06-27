@@ -4,8 +4,8 @@
   <div class="container">
       <div class="row">
         {% if projects %}
-           <div class="col-sm-6">
-             <h2>Availble Project List's</h2>
+           <div class="col-sm-8">
+             <h2>Availble Project's</h2><br />
              <table class="table table-hover">
                   <thead>
                     <tr>
@@ -20,7 +20,7 @@
                         <td><a href="#">View</a></td>
                         <td>
                           <a href="{% url 'hakuna_matata:remove_project' project.id %}">
-                            <span class="glyphicon glyphicon-remove-sign"/>
+                            <img src="{% static 'images/delete.png' %}" class="img-rounded" alt="Cinque Terre" hight="20px" width="20px">
                           </a>
                         </td>
 
@@ -34,9 +34,7 @@
             <h2>No Project's to  display</h2>
           </div>
         {% endif %}
-        <div class="col-sm-6">
-          <img src="{% static 'images/TestingAutomation.png' %}" class="img-rounded" alt="Cinque Terre">
-        </div>
+
       </div>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Projects </button>
       <!-- Modal -->
