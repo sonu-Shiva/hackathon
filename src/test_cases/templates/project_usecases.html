@@ -10,7 +10,10 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th><input class="select-all-ck" type="checkbox" name="select_all_ck" id="id_select_all_ck"> Use Cases</th>
+                        <th>
+                            <input class="select-all-ck" type="checkbox" name="select_all_ck" id="id_select_all_ck">
+                            <label for="id_select_all_ck">Usecases</label>
+                        </th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -19,14 +22,51 @@
                         <tr>
                             <td>
                                 <input class="usecase-ck" type="checkbox" id="{{ usecase.use_case_name.auto_id }}">
-                                <a href="{% url 'qabot:actions' project_id usecase.id %}"> {{ usecase.use_case_name }}</a>
+                                <label for="{{ usecase.use_case_name.auto_id }}"><a href="{% url 'qabot:actions' project_id usecase.id %}"> {{ usecase.use_case_name }}</a></label>
                             </td>
                             <td><a href="http://192.168.22.68:8080/CodeLessAutomation/Controller/?id={{ use_case.id }}" target='_blank'>Run</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <button align='center'>Run Selected UseCases</button>
+            <button type="button" class="btn btn-primary" align='center'>Run Selected Usecases</button>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Usecases</button>
+            {# Model Begins #}
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Add Usecase</h4>
+                            <br />
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'qabot:add_usecases' project_id %}" method="POST">
+                                {% csrf_token %}
+
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Usecase Name</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ usecase_form.use_case_name }}</td>
+                                            <td>{{ usecase_form.use_case_description }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <button type="submit" class="btn btn-default">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {# Model Ends #}
         </div>
     </div>
 {% endblock body %}
