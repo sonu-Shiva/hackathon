@@ -1,7 +1,7 @@
 """Forms.py file."""
 
 from django import forms
-from .models import Action
+from .models import Action, Project
 
 
 ACTION_CHOICES = [
@@ -38,3 +38,13 @@ class ActionsFormset(forms.ModelForm):
 
         model = Action
         fields = ['seq', 'description', 'action', 'locators', 'element_identifier', 'element_value']
+
+
+class ProjectForm(forms.ModelForm):
+    """ProjectForm."""
+
+    class Meta:
+        """Meta class."""
+
+        model = Project
+        fields = ['name']

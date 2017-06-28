@@ -7,8 +7,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.forms import formset_factory
-from .models import Project, Reports, UseCase, Action, ProjectForm
-from .forms import ActionsFormset
+from .models import Project, Reports, UseCase, Action
+from .forms import ActionsFormset, ProjectForm
 from functools import partial, wraps
 
 

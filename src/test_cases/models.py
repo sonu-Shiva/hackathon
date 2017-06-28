@@ -17,12 +17,6 @@ class Project(models.Model):
         return self.name
 
 
-class ProjectForm(forms.ModelForm):
-    """docstring for ProjectForm"""
-    class Meta:
-        model = Project
-        exclude = ()
-
 
 class UseCase(models.Model):
     project = models.ForeignKey(Project)
