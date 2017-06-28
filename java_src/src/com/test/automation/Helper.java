@@ -9,13 +9,13 @@ public class Helper {
 	public Connection controller(){
         System.out.println("in helper");
 		try {
-		Class.forName("org.postgresql.Driver");
+		Class.forName(Property.getPropertyValue(configPptPath,"DBDRIVER"));
 		} catch (ClassNotFoundException e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 		}
 		try {
-		c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/","postgres","Tiger");
+		c = DriverManager.getConnection(Property.getPropertyValue(configPptPath,"DBURL"),Property.getPropertyValue(configPptPath,"DBUN"),Property.getPropertyValue(configPptPath,"DBPWD"));
 		System.out.println("connection successfully established "+c);
 		}
 		catch (SQLException e) {
