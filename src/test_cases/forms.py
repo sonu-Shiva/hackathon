@@ -38,8 +38,3 @@ class ActionsFormset(forms.ModelForm):
 
         model = Action
         fields = ['seq', 'description', 'action', 'locators', 'element_identifier', 'element_value']
-
-    # def __init__(self, use_case_choices=[], *args, **kwargs):
-    #     """Constructor Method."""
-    #     super(ActionsFormset, self).__init__(*args, **kwargs)
-    #     self.fields['use_case'] = forms.ChoiceField(choices=use_case_choices, required=False)
