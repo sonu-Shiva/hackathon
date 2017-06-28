@@ -55,14 +55,9 @@ def usecases_view(request, project_id):
 
 def actions_view(request, project_id, usecase_id):
     """Action screen views."""
-    use_case_obj = UseCase.objects.filter(project__id=project_id).order_by('id').values_list('id', 'use_case_name')
-    use_case_choices = []
-    for obj in use_case_obj:
-        use_case_choices.append(list(obj))
     actions_prefix = 'actions-prefix'
     actions_formset = formset_factory(wraps(ActionsFormset)(partial(
-        ActionsFormset,
-        use_case_choices)),
+        ActionsFormset)),
         max_num=1000,
         extra=0,
         min_num=1
@@ -75,7 +70,6 @@ def actions_view(request, project_id, usecase_id):
             initial_data.append({
                 'hidden_id': obj.id,
                 'seq': obj.seq,
-                'use_case': obj.use_case.id,
                 'description': obj.description,
                 'action': obj.action,
                 'locators': obj.locators,
