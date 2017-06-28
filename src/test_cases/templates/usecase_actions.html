@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block body %}
+    <form method="post" action="{% url 'qabot:actions' project_id usecase_id %}">
+        {% csrf_token %}
+        <div class="padding-left-15">
+            <h1>Use Case: {{ usecase_name }}</h1>
+        </div>
+
+        <div class="panel-body row">
+            <div class="col-md-12">
+                <input type="hidden" id= "id_hidden_actions_prefix" name="hidden_actions_prefix" value="{{ actions_form.prefix }}">
+                <input type="hidden" id= "id_deleted_actions" name="deleted_actions" value="">
+                {{ actions_form.management_form }}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Seq</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                            <th>Locators</th>
+                            <th>Element Identifier</th>
+                            <th>Element Value</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-items" id="sortable">
+                        {% for action in actions_form %}
+                            <tr class="actions-formset">
+                                <td>{{ action.hidden_id }} {{ action.seq }}</td>
+                                <td>{{ action.use_case }}</td>
+                                <td>{{ action.description }}</td>
+                                <td>{{ action.action }}</td>
+                                <td>{{ action.locators }}</td>
+                                <td>{{ action.element_identifier }}</td>
+                                <td>{{ action.element_value }}</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button id="save-btn">Save</button>
+            </div>
+        </div>
+    </form>
+{% endblock body %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+{% endblock js %}
