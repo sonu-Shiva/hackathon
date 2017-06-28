@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'hackathon_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hackathon_db',
-        'USER': 'hackathon',
-        'PASSWORD': 'hackathon',
-        'HOST': 'hackathon.cuuuwyhnfkj0.us-west-2.rds.amazonaws.com',
+        'NAME': 'local_db',
+        'USER': 'local_user',
+        'PASSWORD': 'local_password',
+        'HOST': 'localhost',
         'PORT': '5432',
     },
 }
@@ -123,4 +123,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 STATIC_URL = '/static/'

@@ -16,11 +16,11 @@
                   <tbody>
                   {% for project in projects %}
                     <tr>
-                        <td><a href="#">{{project.name}}</a></td>
+                        <td><a href="{% url 'hakuna_matata:usecases' project.id %}">{{project.name}}</a></td>
                         <td><a href="#">View</a></td>
                         <td>
                           <a href="{% url 'hakuna_matata:remove_project' project.id %}">
-                            <img src="{% static 'images/delete.png' %}" class="img-rounded" alt="Cinque Terre" hight="20px" width="20px">
+                            <img src="{% static 'images/remove.svg' %}" class="img-rounded" alt="Cinque Terre" hight="30px" width="30px">
                           </a>
                         </td>
 

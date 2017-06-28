@@ -46,7 +46,7 @@ padding-left: 9%;
                                     {% for use_case in project.usecase_set.all %}
                                     <tr>
                                         <td>{{use_case.use_case_name}}</td>
-                                        <td><a href="http://192.168.22.68:8080/CodeLessAutomation/Controller/?id={{use_case.id}}" target='_blank'>Run</a></td>
+                                        <td><a href="http://192.168.22.144:8080/CodeLessAutomation/Controller/?id={{use_case.id}}" target='_blank'>Run</a></td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
