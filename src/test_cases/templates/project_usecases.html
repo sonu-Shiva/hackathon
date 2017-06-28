@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block body %}
+    <div class="padding-left-15">
+        <h1>Project: {{ project }}</h1>
+    </div>
+
+    <div class="panel-body row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><input class="select-all-ck" type="checkbox" name="select_all_ck" id="id_select_all_ck"> Use Cases</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usecase in usecases %}
+                        <tr>
+                            <td>
+                                <input class="usecase-ck" type="checkbox" id="{{ usecase.use_case_name.auto_id }}">
+                                <a href="{% url 'qabot:actions' project_id usecase.id %}"> {{ usecase.use_case_name }}</a>
+                            </td>
+                            <td><a href="http://192.168.22.68:8080/CodeLessAutomation/Controller/?id={{ use_case.id }}" target='_blank'>Run</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button align='center'>Run Selected UseCases</button>
+        </div>
+    </div>
+{% endblock body %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+{% endblock js %}
