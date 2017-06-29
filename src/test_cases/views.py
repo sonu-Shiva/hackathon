@@ -41,7 +41,7 @@ def render_report(request, report_id):
         report = Reports.objects.get(use_case_id=report_id).report
     except Reports.DoesNotExist:
         return HttpResponse(500)
-    return HttpResponse(report)
+    return render(request, report)
 
 
 def add_project(request):
