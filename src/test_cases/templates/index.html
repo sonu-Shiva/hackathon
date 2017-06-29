@@ -5,7 +5,7 @@
       <div class="row">
         {% if projects %}
            <div class="col-sm-6">
-             <h2>Availble Project's</h2><br />
+             <h2>Availble Projects</h2><br />
              <table class="table">
                   <thead>
                     <tr>
@@ -17,7 +17,7 @@
                   {% for project in projects %}
                     <tr>
                         <td><a href="{% url 'hakuna_matata:usecases' project.id %}">{{project.name}}</a></td>
-                        <td><a href="#">View</a>
+                        <td><a href="{% url 'hakuna_matata:reports' project.id %}">View</a>
                         <span id='delete-button'>
                           <a href="{% url 'hakuna_matata:remove_project' project.id %}">
                               <img src="{% static 'images/remove.svg' %}" class="img-rounded" alt="Cinque Terre" hight="30px" width="30px">
@@ -32,7 +32,7 @@
            </div>
         {% else %}
           <div class="col-sm-6">
-            <h2>No Project's to  display</h2>
+            <h2>No Projects to Display</h2>
           </div>
         {% endif %}
 

@@ -1,11 +1,14 @@
 body {
-    background-image: url( '/static/images/automation.jpg' );
-    background-size: cover;
-    opacity: 1.5;
+    background-color: #FFFFFF;
 }
 
 #delete-button {
     position: relative;
     left: 50px;
     bottom: -5px;
+}
+
+.navbar-brand {
+    position: relative;
+    bottom: -15px;
 }

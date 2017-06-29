@@ -23,11 +23,14 @@ def project_view(request):
     return render(request, "index.html", context)
 
 
-def reports_view(request):
+def reports_view(request, project_id):
     """Report screen views."""
-    projects = Project.objects.all()
+    try:
+        test_cases = UseCase.objects.filter(project__id=project_id)
+    except Reports.DoesNotExist:
+        return HttpResponse(500)
     context = {
-        "projects": projects,
+        "test_cases": test_cases,
     }
     return render(request, "reports_list.html", context)
 
@@ -35,7 +38,7 @@ def reports_view(request):
 def render_report(request, report_id):
     """Show reports views."""
     try:
-        report = Reports.objects.get(id=report_id).report
+        report = Reports.objects.get(use_case_id=report_id).report
     except Reports.DoesNotExist:
         return HttpResponse(500)
     return HttpResponse(report)
