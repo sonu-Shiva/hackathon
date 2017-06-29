@@ -1,16 +1,15 @@
 $(document).ready(function(){
-    // Disabling submit behaviour for all buttons except for Save button.
-    $(document).on('click', 'button', function(e){
-        if ( !$(this).attr('id') === 'save-btn' ) {
-            e.preventDefault();
-        }
-    });
-
     // Dragging Feature.
     $( "#sortable" ).sortable({
         revert: true,
         items: 'tr.actions-formset',
+        axis: 'y',
         stop: function(event, ui){ rearrageSequenceNumbers(ui.item); }
+    }).disableSelection();
+
+    // Disabling sort on delete button.
+    $('#sortable td.dont-move').mousedown(function(event){
+        event.stopImmediatePropagation();
     });
 
     $(document).on('click', '.select-all-ck', function(){
@@ -29,7 +28,7 @@ $(document).ready(function(){
     var prefix = $('#id_hidden_actions_prefix').val();
     $('.actions-formset').formset({
         prefix: prefix,
-        addText: '<button id="id_' + prefix + '"><i class="fa fa-plus" aria-hidden="true"> Add Action</i></button>',
+        addText: '<button type="button" class="btn btn-primary" id="id_' + prefix + '"><i class="fa fa-plus" aria-hidden="true"> Add Action</i></button>',
         deleteText: '<i class="fa fa-trash font-size-25" aria-hidden="true"></i>',
         addClass: 'add-row',
         added: onAddEvent,
@@ -41,6 +40,10 @@ function onAddEvent(ele) {
     var new_sequence_number = parseInt($(ele).prev().find("input[id$='-seq']").val()) + 1;
     new_sequence_number = new_sequence_number ? new_sequence_number : 1;
     $(ele).find("input[id$='-seq']").val(new_sequence_number);
+
+    $(ele).find("select").each(function(){
+        $(this).val($(this).find('option:first').val());
+    });
 }
 
 function onDeleteEvent(ele) {
