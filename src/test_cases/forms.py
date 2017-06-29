@@ -1,7 +1,7 @@
 """Forms.py file."""
 
 from django import forms
-from .models import Action, UseCase
+from .models import Action, UseCase, Project
 
 DEFAULT_OPTION = [["", "Select an option"]]
 
@@ -49,3 +49,13 @@ class UsecaseForm(forms.ModelForm):
 
         model = UseCase
         fields = ['use_case_name', 'use_case_description']
+
+
+class ProjectForm(forms.ModelForm):
+    """ProjectForm."""
+
+    class Meta:
+        """Meta class."""
+
+        model = Project
+        fields = ['name']

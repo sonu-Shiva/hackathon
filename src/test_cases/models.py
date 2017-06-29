@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django import forms
 
 
 class Project(models.Model):
@@ -14,6 +15,7 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
 
 
 class UseCase(models.Model):
