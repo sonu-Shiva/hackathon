@@ -5,19 +5,22 @@ from __future__ import unicode_literals
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.forms import formset_factory
 from .models import Project, Reports, UseCase, Action
-from .forms import ActionsFormset
+from .forms import ActionsFormset, ProjectForm
 from functools import partial, wraps
 
 
 def project_view(request):
     """Project screen views."""
     projects = Project.objects.all()
+    form = ProjectForm()
     context = {
         "projects": projects,
+        "form": form,
     }
-    return render(request, "projects_list.html", context)
+    return render(request, "index.html", context)
 
 
 def reports_view(request):
@@ -36,6 +39,22 @@ def render_report(request, report_id):
     except Reports.DoesNotExist:
         return HttpResponse(500)
     return HttpResponse(report)
+
+
+def add_project(request):
+    """Add new project."""
+    if request.POST:
+        new_project = ProjectForm(request.POST)
+        if new_project.is_valid():
+            new_project.save()
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:projects'))
+
+
+def remove_project(request, project_id):
+    """Remove project."""
+    remove_project = get_object_or_404(Project, pk=project_id)
+    remove_project.delete()
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:projects'))
 
 
 def usecases_view(request, project_id):

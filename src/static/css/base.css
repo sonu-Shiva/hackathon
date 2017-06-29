@@ -1,0 +1,11 @@
+body {
+    background-image: url( '/static/images/automation.jpg' );
+    background-size: cover;
+    opacity: 1.5;
+}
+
+#delete-button {
+    position: relative;
+    left: 50px;
+    bottom: -5px;
+}
