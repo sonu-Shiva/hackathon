@@ -18,12 +18,17 @@ public class Controller extends HttpServlet {
 
     public static void process(HttpServletRequest request, HttpServletResponse response){
     	
-    	System.out.println(request.getQueryString());
+    	 	System.out.println(request.getQueryString());
     	String queryString=request.getQueryString();
+    	if(queryString!=null){
     	String[] queryItems=queryString.split("&");
     	System.out.println("in process");
         Model.triggerSelenium(queryItems[0],queryItems[1]);
     	}
+    	
+        
+    	}
+    	
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	   System.out.println("In get");
