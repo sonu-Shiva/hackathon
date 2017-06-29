@@ -13,3 +13,7 @@ body {
     position: relative;
     bottom: -15px;
 }
+textarea {
+    height: 5vw;
+    border-radius: 3px;
+}
