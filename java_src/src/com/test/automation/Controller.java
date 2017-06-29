@@ -18,11 +18,11 @@ public class Controller extends HttpServlet {
 
     public static void process(HttpServletRequest request, HttpServletResponse response){
     	
-    	int id =1;//Integer.parseInt(request.getParameter("id"));
-    	String browser="Chrome";
+    	System.out.println(request.getQueryString());
+    	String queryString=request.getQueryString();
+    	String[] queryItems=queryString.split("&");
     	System.out.println("in process");
-        Model.triggerSelenium(id,browser);
-        //jd.jdMethod(id);
+        Model.triggerSelenium(queryItems[0],queryItems[1]);
     	}
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
