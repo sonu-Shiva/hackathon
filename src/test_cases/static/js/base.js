@@ -3,7 +3,6 @@ $(document).ready(function(){
     $( "#sortable" ).sortable({
         revert: true,
         items: 'tr.actions-formset',
-        axis: 'y',
         stop: function(event, ui){ rearrageSequenceNumbers(ui.item); }
     }).disableSelection();
 
@@ -12,16 +11,22 @@ $(document).ready(function(){
         event.stopImmediatePropagation();
     });
 
-    $(document).on('click', '.select-all-ck', function(){
+    selectUnselectAll('.select-all-usecases-ck', '.usecase-ck');
+
+    var id_list = [];
+    $(document).on('click', '.usecase-ck', function(){
+        var current_usecase_id = $(this).parent('td').find('label a').attr('href').split('/').slice(-1)[0];
+        var index = id_list.indexOf(current_usecase_id);
         if ( $(this).is(':checked') ) {
-            $(document).find('.usecase-ck').each(function(){
-                $(this).prop('checked', true);
-            });
+            if ( index < 0 ) {
+                id_list.push(current_usecase_id);
+            }
         } else {
-            $(document).find('.usecase-ck').each(function(){
-                $(this).prop('checked', false);
-            });
+            if ( index > -1 ) {
+                id_list.splice(index, 1);
+            }
         }
+        $("#run_multiple_ucs").attr('href', "http://192.168.22.115:8080/CodeLessAutomation/Controller/?usecase_id=" + id_list);
     });
 
     // Actions formset.
@@ -57,6 +62,27 @@ function onDeleteEvent(ele) {
         $("#id_deleted_actions").val( $("#id_deleted_actions").val() + id_val + ';' );
     }
 }
+
+function selectUnselectAll(parentCheckboxClass, childCheckboxesClass) {
+    $(document).on('click', parentCheckboxClass, function(){
+        if ( $(this).is(':checked') ) {
+            $(document).find(childCheckboxesClass).each(function(){
+                $(this).prop('checked', true);
+            });
+        } else {
+            $(document).find(childCheckboxesClass).each(function(){
+                $(this).prop('checked', false);
+            });
+        }
+    });
+
+    $(document).on('click', childCheckboxesClass, function(){
+        if ( !$(this).is(':checked') ) {
+            $(document).find(parentCheckboxClass).prop('checked', false);
+        }
+    });
+}
+
 
 function rearrageSequenceNumbers(ele) {
     var current = parseInt($(ele).find('input[id$=-seq]').val());

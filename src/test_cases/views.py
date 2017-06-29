@@ -7,8 +7,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.forms import formset_factory
-from .models import Project, Reports, UseCase, Action
-from .forms import ActionsFormset, ProjectForm, UsecaseForm
+from .models import Project, Reports, UseCase, Action, Jobs
+from .forms import ActionsFormset, ProjectForm, UsecaseForm, JobsForm
 from functools import partial, wraps
 
 
@@ -62,16 +62,20 @@ def usecases_view(request, project_id):
     try:
         project = Project.objects.get(id=project_id).name
         usecases = UseCase.objects.filter(project__id=project_id).order_by('id')
+        jobs = Jobs.objects.filter(project__id=project_id).order_by('id')
     except (UseCase.DoesNotExist, Project.DoesNotExist):
         return HttpResponse(500)
 
     usecase_form = UsecaseForm()
+    jobs_form = JobsForm()
 
     context = {
         'project_id': project_id,
         'project': project,
         'usecases': usecases,
         'usecase_form': usecase_form,
+        'jobs_form': jobs_form,
+        'jobs': jobs
     }
     return render(request, 'project_usecases.html', context)
 
@@ -85,6 +89,33 @@ def add_usecases_view(request, project_id):
             project = Project.objects.get(id=project_id)
             UseCase.objects.create(project=project, use_case_name=clean_data['use_case_name'], use_case_description=clean_data['use_case_description'])
     return HttpResponseRedirect(reverse_lazy('hakuna_matata:usecases', kwargs={'project_id': project_id}))
+
+
+def add_jobs_view(request, project_id):
+    """View to handle newly added jobs."""
+    jobs_form = JobsForm(data=request.POST)
+    if jobs_form.is_valid():
+        clean_data = jobs_form.cleaned_data
+        if any(clean_data.values()):
+            project = Project.objects.get(id=project_id)
+            Jobs.objects.create(project=project, name=clean_data['name'])
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:usecases', kwargs={'project_id': project_id}))
+
+
+def job_view(request, project_id, job_id):
+    """Job screen View."""
+    try:
+        job_name = Jobs.objects.get(id=job_id).name
+    except Jobs.DoesNotExist:
+        return HttpResponse(500)
+
+    if request.method == 'GET':
+        context = {
+            'project_id': project_id,
+            'job_id': job_id,
+            'job_name': job_name
+        }
+        return render(request, 'job.html', context)
 
 
 def actions_view(request, project_id, usecase_id):

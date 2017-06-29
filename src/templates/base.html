@@ -28,16 +28,19 @@
     </head>
     <body>
         <nav class="navbar navbar-inverse navbar-fixed-top">
-          <div class="navbar-position container">
-            <div class="navbar-header">
-              <a class="navbar-brand" href="{% url 'hakuna_matata:projects' %}">Hakuna Matata</a>
+            <div class="navbar-position container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{% url 'hakuna_matata:projects' %}">Hakuna Matata</a>
+                </div>
             </div>
-          </div>
         </nav>
+
         {% block header %} {% endblock header%}
+
         <div class="container frame">
             {% block body %} {% endblock body %}
         </div>
+
         {% block footer %} {% endblock footer%}
     </body>
 </html>
