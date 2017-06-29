@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.forms import formset_factory
 from .models import Project, Reports, UseCase, Action
-from .forms import ActionsFormset, ProjectForm
+from .forms import ActionsFormset, ProjectForm, UsecaseForm
 from functools import partial, wraps
 
 
@@ -61,15 +61,30 @@ def usecases_view(request, project_id):
     """Usecase screen views."""
     try:
         project = Project.objects.get(id=project_id).name
-        usecases = UseCase.objects.filter(project__id=project_id)
+        usecases = UseCase.objects.filter(project__id=project_id).order_by('id')
     except (UseCase.DoesNotExist, Project.DoesNotExist):
         return HttpResponse(500)
+
+    usecase_form = UsecaseForm()
+
     context = {
         'project_id': project_id,
         'project': project,
         'usecases': usecases,
+        'usecase_form': usecase_form,
     }
     return render(request, 'project_usecases.html', context)
+
+
+def add_usecases_view(request, project_id):
+    """View to handle newly added usecases."""
+    usecase_form = UsecaseForm(data=request.POST)
+    if usecase_form.is_valid():
+        clean_data = usecase_form.cleaned_data
+        if any(clean_data.values()):
+            project = Project.objects.get(id=project_id)
+            UseCase.objects.create(project=project, use_case_name=clean_data['use_case_name'], use_case_description=clean_data['use_case_description'])
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:usecases', kwargs={'project_id': project_id}))
 
 
 def actions_view(request, project_id, usecase_id):
@@ -83,7 +98,7 @@ def actions_view(request, project_id, usecase_id):
     )
 
     if request.method == 'GET':
-        actions_obj = Action.objects.filter(use_case__id=usecase_id).order_by('id')
+        actions_obj = Action.objects.filter(use_case__id=usecase_id).order_by('seq')
         initial_data = []
         for obj in actions_obj:
             initial_data.append({
@@ -95,7 +110,7 @@ def actions_view(request, project_id, usecase_id):
                 'element_identifier': obj.element_identifier,
                 'element_value': obj.element_value,
             })
-        else:
+        if not initial_data:
             initial_data = [{'seq': 1}]
         actions_form = actions_formset(initial=initial_data, prefix=actions_prefix)
         context = {
@@ -138,4 +153,4 @@ def actions_view(request, project_id, usecase_id):
                             element_identifier=action['element_identifier'],
                             element_value=action['element_value'],
                         )
-        return HttpResponseRedirect(reverse_lazy('qabot:actions', kwargs={'project_id': project_id, 'usecase_id': usecase_id}))
+        return HttpResponseRedirect(reverse_lazy('hakuna_matata:actions', kwargs={'project_id': project_id, 'usecase_id': usecase_id}))
