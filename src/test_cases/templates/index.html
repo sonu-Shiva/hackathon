@@ -18,11 +18,26 @@
                     <tr>
                         <td><a href="{% url 'hakuna_matata:usecases' project.id %}">{{project.name}}</a></td>
                         <td><a href="{% url 'hakuna_matata:reports' project.id %}">View</a>
-                        <span id='delete-button'>
-                          <a href="{% url 'hakuna_matata:remove_project' project.id %}">
+                        <div id='delete-button' data-toggle="modal" data-target="#removeProdModal">
                               <img src="{% static 'images/remove.svg' %}" class="img-rounded" alt="Cinque Terre" hight="30px" width="30px">
-                            </a>
-                          </span>
+                        </div>
+                        <div id="removeProdModal" class="modal fade" role="dialog">
+                          <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                              <div class="modal-body align-center">
+                                <p id="remove-product-text">Do you want to remove project?</p>
+                              </div>
+                              <div class="modal-footer align-center">
+                                <form action="{% url 'hakuna_matata:remove_project' project.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn footer-filled-btn">Yes</button>
+                                    <button type="cancel" class="btn IR-status-btn" data-dismiss="modal">No</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         </td>
 
                     </tr>

@@ -5,7 +5,8 @@ body {
 #delete-button {
     position: relative;
     left: 50px;
-    bottom: -5px;
+    bottom: -4px;
+    display: inline;
 }
 
 .navbar-brand {
