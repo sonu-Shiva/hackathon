@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -19,25 +20,48 @@ import com.relevantcodes.extentreports.LogStatus;
 
 
 public class Model {
-	
+public static File file;	
 public static void triggerSelenium(int usecase_id,String browser){
 	System.out.println("in model");
-    Statement st=null;
+        Statement st=null;
+        Statement st1=null;
+        Statement st2=null;
 	ResultSet rs=null;
+        ResultSet rs1=null;
+        String usecaseName=null;
 	ExtentReports eReport;
 	ExtentTest testReport;
-	Date date = new Date();
-	String dateVar=date.toString();
-	//File f=new File("Reports");
-	 eReport=new ExtentReports("C://Users//sandeepraju//Desktop//Workplace//QA-BOT//reports//ESFREPORT.html");
-	 testReport=eReport.startTest("UseCase");
-	WebDriver driver=null;
-	Helper h=new Helper();
 	
+//db connection
+	Helper h=new Helper();
 	Connection c=h.controller();
+	try {
+	    st1=c.createStatement();
+	    String query1 = "SELECT uc_name FROM public.\"Usecase\" Where prod_id="+1+" and uc_id="+usecase_id+"; ";
+	    System.out.println("after connection1");
+	    rs1=st1.executeQuery(query1);
+	    while(rs1.next()){
+	    	usecaseName=rs1.getString("uc_name");
+	    	System.out.println(usecaseName);
+	    }
+	    
+	} catch (SQLException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+
+String dateVar = new Model().getDateTime();
+	System.out.println(dateVar);
+	file = new File(Property.getPropertyValue(configPptPath,"REPORTFOLDER")+dateVar+usecase_id);
+	file.mkdir();
+	eReport=new ExtentReports(Property.getPropertyValue(configPptPath,"REPORTFOLDER")+dateVar+usecase_id+"//"+usecaseName+usecase_id+".html");
+
+		
+	testReport=eReport.startTest(usecaseName);
+	
      try {
     	 System.out.println("after connection");
-    	st=c.createStatement(); //Select description,action,locators,element_identifier,element_value from test_cases_action where use_case_id="+usecase_id+" Order by id
+    	st=c.createStatement(); 
     	String query = "SELECT usecase_id, description, action, locators, element_identifier, element_value, seq_id FROM public.\"Actions_Table\"  ORDER BY SEQ_ID;";
     	System.out.println("after connection1");
     	rs = st.executeQuery(query);
@@ -46,11 +70,11 @@ public static void triggerSelenium(int usecase_id,String browser){
 			driver = new FirefoxDriver();
     	}
 		else if(browser.equalsIgnoreCase("ie")){
-			System.setProperty("webdriver.ie.driver", "C://Users//user//Documents//IEDriverServer.exe");
+			System.setProperty("webdriver.ie.driver", Property.getPropertyValue(configPptPath,"IEDRIVERPATH"));
 			driver = new InternetExplorerDriver();
 		}
 		else if(browser.equalsIgnoreCase("Chrome")){
-			System.setProperty("webdriver.chrome.driver","C://Users//sandeepraju//Desktop//Workplace//CodeLessAutomation//drivers//chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver",Property.getPropertyValue(configPptPath,"CHROMEDRIVERPATH"));
 			driver = new ChromeDriver();
 		}
     	
@@ -111,5 +135,21 @@ public static void triggerSelenium(int usecase_id,String browser){
      }
      
    
+}
+
+public String getDateTime(){
+ 	
+	 // Create object of SimpleDateFormat class and decide the format
+	 DateFormat dateFormat = new SimpleDateFormat("MM_dd_yyyy HH.mm.ss");
+	 //get current date time with Date()
+	 Date date = new Date();
+	 
+	 // Now format the date
+	 String currentDate= dateFormat.format(date);
+	 
+//
+	 System.out.println("Current date and time is " + currentDate );
+	return currentDate;
+	
 }
 }

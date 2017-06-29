@@ -5,19 +5,22 @@ from __future__ import unicode_literals
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.forms import formset_factory
 from .models import Project, Reports, UseCase, Action
-from .forms import ActionsFormset, UsecaseForm
+from .forms import ActionsFormset, ProjectForm, UsecaseForm
 from functools import partial, wraps
 
 
 def project_view(request):
     """Project screen views."""
     projects = Project.objects.all()
+    form = ProjectForm()
     context = {
         "projects": projects,
+        "form": form,
     }
-    return render(request, "projects_list.html", context)
+    return render(request, "index.html", context)
 
 
 def reports_view(request):
@@ -36,6 +39,22 @@ def render_report(request, report_id):
     except Reports.DoesNotExist:
         return HttpResponse(500)
     return HttpResponse(report)
+
+
+def add_project(request):
+    """Add new project."""
+    if request.POST:
+        new_project = ProjectForm(request.POST)
+        if new_project.is_valid():
+            new_project.save()
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:projects'))
+
+
+def remove_project(request, project_id):
+    """Remove project."""
+    remove_project = get_object_or_404(Project, pk=project_id)
+    remove_project.delete()
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:projects'))
 
 
 def usecases_view(request, project_id):
@@ -65,7 +84,7 @@ def add_usecases_view(request, project_id):
         if any(clean_data.values()):
             project = Project.objects.get(id=project_id)
             UseCase.objects.create(project=project, use_case_name=clean_data['use_case_name'], use_case_description=clean_data['use_case_description'])
-    return HttpResponseRedirect(reverse_lazy('qabot:usecases', kwargs={'project_id': project_id}))
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:usecases', kwargs={'project_id': project_id}))
 
 
 def actions_view(request, project_id, usecase_id):
@@ -134,4 +153,4 @@ def actions_view(request, project_id, usecase_id):
                             element_identifier=action['element_identifier'],
                             element_value=action['element_value'],
                         )
-        return HttpResponseRedirect(reverse_lazy('qabot:actions', kwargs={'project_id': project_id, 'usecase_id': usecase_id}))
+        return HttpResponseRedirect(reverse_lazy('hakuna_matata:actions', kwargs={'project_id': project_id, 'usecase_id': usecase_id}))

@@ -22,7 +22,7 @@
                         <tr>
                             <td>
                                 <input class="usecase-ck" type="checkbox" id="{{ usecase.use_case_name.auto_id }}">
-                                <label for="{{ usecase.use_case_name.auto_id }}"><a href="{% url 'qabot:actions' project_id usecase.id %}"> {{ usecase.use_case_name }}</a></label>
+                                <label for="{{ usecase.use_case_name.auto_id }}"><a href="{% url 'hakuna_matata:actions' project_id usecase.id %}"> {{ usecase.use_case_name }}</a></label>
                             </td>
                             <td><a href="http://192.168.22.68:8080/CodeLessAutomation/Controller/?id={{ use_case.id }}" target='_blank'>Run</a></td>
                         </tr>
@@ -42,7 +42,7 @@
                             <br />
                         </div>
                         <div class="modal-body">
-                            <form action="{% url 'qabot:add_usecases' project_id %}" method="POST">
+                            <form action="{% url 'hakuna_matata:add_usecases' project_id %}" method="POST">
                                 {% csrf_token %}
 
                                 <table class="table table-striped">
