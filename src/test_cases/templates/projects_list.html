@@ -29,7 +29,7 @@ padding-left: 9%;
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#collapse{{forloop.counter}}">{{project.name}}</a>
+                        <a href="{% url 'hakuna_matata:usecases' project.id %}">{{project.name}}</a>
                     </h4>
                 </div>
                 <div id="collapse{{forloop.counter}}" class="panel-collapse collapse">

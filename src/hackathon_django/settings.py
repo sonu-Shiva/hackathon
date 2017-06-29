@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'hackathon_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'local_db',
-        'USER': 'local_user',
-        'PASSWORD': 'local_password',
+        'NAME': 'esf',
+        'USER': 'esf',
+        'PASSWORD': 'esf',
         'HOST': 'localhost',
         'PORT': '5432',
     },
