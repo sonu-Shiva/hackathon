@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -25,7 +24,7 @@ public class ActionMethods {
 			driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).click();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Click operation failed");
+			testReport.log(LogStatus.FAIL,"Click operation failed"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
 			e.printStackTrace();
 			
@@ -40,7 +39,7 @@ public class ActionMethods {
 			driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).sendKeys(testdata);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Not able to input the text");
+			testReport.log(LogStatus.FAIL,"Not able to input the text"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
 			e.printStackTrace();
 			return;
@@ -86,7 +85,7 @@ public class ActionMethods {
 		    new Select(driver.findElement(new LocatorClass().getLocator(locatorName,locatorData))).selectByValue(dropdownvalue);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Not able to select value from dropdown");
+			testReport.log(LogStatus.FAIL,"Not able to select value from dropdown"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
 			e.printStackTrace();
 			return;
@@ -117,7 +116,7 @@ public class ActionMethods {
 		    }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Not able to select value from lookup");
+			testReport.log(LogStatus.FAIL,"Not able to select value from lookup"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
 			e.printStackTrace();
 			return;
@@ -130,7 +129,7 @@ public class ActionMethods {
 			driver.get(testdata);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Not able to enter URL");
+			testReport.log(LogStatus.FAIL,"Not able to enter URL"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
 			e.printStackTrace();
 			return;
@@ -164,7 +163,7 @@ public class ActionMethods {
 	     }
 	     catch (SQLException e) {
 	 		// TODO Auto-generated catch block
-	    	testReport.log(LogStatus.FAIL,"Failed to Loop"+e.getMessage());
+	    	testReport.log(LogStatus.FAIL,"Failed to Loop"+e.getMessage()+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
 	 		e.printStackTrace();
 	 		return;
 	 	}	
@@ -182,12 +181,12 @@ public class ActionMethods {
 		}
 		else{
 			System.out.println("Element is not present");
-			testReport.log(LogStatus.FAIL,"Element "+testdata+" is not present");	
+			testReport.log(LogStatus.FAIL,"Element "+testdata+" is not present"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));	
 		}
 		}
 		catch(Exception e){
 			System.out.println("Invalid LocatorValue");
-			testReport.log(LogStatus.FAIL,"Element is not present or Invalid LocatorValue"+e.getMessage());
+			testReport.log(LogStatus.FAIL,"Element is not present or Invalid LocatorValue"+e.getMessage()+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
 			e.printStackTrace();
 			return;
 		}
