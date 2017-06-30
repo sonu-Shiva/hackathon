@@ -8,6 +8,7 @@ urlpatterns = (
     url(r'^$', view=views.project_view, name="projects"),
     url(r'^(?P<project_id>\d+)/usecases$', view=views.usecases_view, name="usecases"),
     url(r'^add-usecase/(?P<project_id>\d+)$', view=views.add_usecases_view, name="add_usecases"),
+    url(r'^delete-usecases/(?P<project_id>\d+)$', view=views.delete_usecases_view, name="delete_usecases"),
     url(r'^(?P<project_id>\d+)/job/(?P<job_id>\d+)$', view=views.job_view, name="job"),
     url(r'^add-jobs/(?P<project_id>\d+)$', view=views.add_jobs_view, name="add_jobs"),
     url(r'^(?P<project_id>\d+)/usecases/actions/(?P<usecase_id>\d+)$', view=views.actions_view, name="actions"),

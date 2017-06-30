@@ -13,20 +13,40 @@ $(document).ready(function(){
 
     selectUnselectAll('.select-all-usecases-ck', '.usecase-ck');
 
-    var id_list = [];
-    $(document).on('click', '.usecase-ck', function(){
-        var current_usecase_id = $(this).parent('td').find('label a').attr('href').split('/').slice(-1)[0];
-        var index = id_list.indexOf(current_usecase_id);
-        if ( $(this).is(':checked') ) {
-            if ( index < 0 ) {
-                id_list.push(current_usecase_id);
+    $("#id_uc_execution_type_0").prop('checked', true);
+    $("#id_job_execution_type_0").prop('checked', true);
+
+    var URL = $('#id_url_hidden_input').val();
+
+    $(document).on('click', '.individual_uc', function(){
+        var browser = $('#id_browser_usecases').find(":selected").val();
+        $(this).attr('href', $(this).attr('href') + '&' + browser);
+    });
+
+    $(document).on('click', '#id_run_multiple_ucs', function(){
+        var id_list = [];
+        $(".usecase-ck:checked").each(function(){
+            var current_usecase_id = $(this).parent('td').find('label a').attr('href').split('/').slice(-1)[0];
+            id_list.push(current_usecase_id);
+        });
+        var browser = $('#id_browser_usecases').find(":selected").val();
+        var execution_type = $('#id_uc_execution_type').find(':checked').val();
+        if ( execution_type === 'Parallel' ) {
+            $(this).attr('href', 'javascript:void(0)');
+            for (var i = 0; i < id_list.length; i++) {
+                var uc_url = URL + '?usecase_id=' + id_list[i] + '&' + browser;
+                openInNewTab(uc_url);
             }
         } else {
-            if ( index > -1 ) {
-                id_list.splice(index, 1);
-            }
+            $(this).attr('href', URL + "?usecase_id=" + id_list + '&' + browser);
         }
-        $("#run_multiple_ucs").attr('href', "http://192.168.22.115:8080/CodeLessAutomation/Controller/?usecase_id=" + id_list);
+    });
+
+    $(document).on('click', '#id_delete_usecase_btn', function(){
+        $(".usecase-ck:checked").each(function(){
+            var current_usecase_id = $(this).parent('td').find('label a').attr('href').split('/').slice(-1)[0];
+            $("#id_deleted_usecases").val($("#id_deleted_usecases").val() + current_usecase_id + ';');
+        });
     });
 
     // Actions formset.
@@ -40,6 +60,10 @@ $(document).ready(function(){
         removed: onDeleteEvent
     });
 })
+
+function openInNewTab(url) {
+    var win = window.open(url, '_blank');
+}
 
 function onAddEvent(ele) {
     var new_sequence_number = parseInt($(ele).prev().find("input[id$='-seq']").val()) + 1;
@@ -82,7 +106,6 @@ function selectUnselectAll(parentCheckboxClass, childCheckboxesClass) {
         }
     });
 }
-
 
 function rearrageSequenceNumbers(ele) {
     var current = parseInt($(ele).find('input[id$=-seq]').val());
