@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import environ
+
+
+env = environ.Env()
+environ.Env.read_env()  # reading .env file
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -78,11 +83,11 @@ WSGI_APPLICATION = 'hackathon_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'local_db',
-        'USER': 'local_user',
-        'PASSWORD': 'local_password',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': env('DB_NAME', default='local_db'),
+        'USER': env('DB_USERNAME', default='local_user'),
+        'PASSWORD': env('DB_PASSWORD', default='local_password'),
+        'HOST': env('DB_HOST', default='localhost'),
+        'PORT': env('DB_PORT', default='5432'),
     },
 }
 
@@ -125,3 +130,8 @@ USE_TZ = True
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 STATIC_URL = '/static/'
+
+JAVA_SERVER_IP = env('JAVA_SERVER_IP', default='192.168.22.115')
+JAVA_SERVER_PORT = env('JAVA_SERVER_PORT', default='8080')
+JAVA_API_PATH = env('JAVA_API_PATH', default='/CodeLessAutomation/Controller/').strip('/')
+JAVA_API_URL = 'http://{ip}:{port}/{path}/'.format(ip=JAVA_SERVER_IP, port=JAVA_SERVER_PORT, path=JAVA_API_PATH)
