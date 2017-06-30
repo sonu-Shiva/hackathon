@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.forms import formset_factory
+from django.conf import settings
 from .models import Project, Reports, UseCase, Action, Jobs
 from .forms import ActionsFormset, ProjectForm, UsecaseForm, JobsForm
 from functools import partial, wraps
@@ -71,14 +72,16 @@ def usecases_view(request, project_id):
 
     usecase_form = UsecaseForm()
     jobs_form = JobsForm()
-
     context = {
         'project_id': project_id,
         'project': project,
         'usecases': usecases,
+        'has_usecases': bool(usecases),
+        'url': settings.JAVA_API_URL,
         'usecase_form': usecase_form,
         'jobs_form': jobs_form,
-        'jobs': jobs
+        'jobs': jobs,
+        'has_jobs': bool(jobs),
     }
     return render(request, 'project_usecases.html', context)
 
@@ -91,6 +94,17 @@ def add_usecases_view(request, project_id):
         if any(clean_data.values()):
             project = Project.objects.get(id=project_id)
             UseCase.objects.create(project=project, use_case_name=clean_data['use_case_name'], use_case_description=clean_data['use_case_description'])
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:usecases', kwargs={'project_id': project_id}))
+
+
+def delete_usecases_view(request, project_id):
+    """View to handle deleted usecases."""
+    for usecase_id in request.POST.get('deleted_usecases', '').strip(';').split(';'):
+        if usecase_id:
+            try:
+                UseCase.objects.get(id=int(usecase_id)).delete()
+            except UseCase.DoesNotExist:
+                pass  # Object must have already been deleted.
     return HttpResponseRedirect(reverse_lazy('hakuna_matata:usecases', kwargs={'project_id': project_id}))
 
 
