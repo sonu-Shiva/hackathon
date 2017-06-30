@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Helper {
+public class Helper implements Constants {
 	Connection c;
 	public Connection controller(){
         System.out.println("in helper");
