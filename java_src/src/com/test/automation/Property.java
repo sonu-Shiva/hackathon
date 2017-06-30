@@ -1,22 +1,24 @@
 package com.test.automation;
 
-import java.io.FileInputStream;
 import java.util.Properties;
 
 public class Property {
-	
-	public static String getPropertyValue(String filePath,String key)
-	
-	{
-		String value="";
-		Properties ppt = new Properties();
+	static Properties configProperies = new Properties();
+	static String filePath = "config.properties";
+	static {
+		
 		try{
-		ppt.load(new FileInputStream(filePath));
-		value= ppt.getProperty(key);
+			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			java.io.InputStream input = classLoader.getResourceAsStream(filePath);
+			configProperies.load(input);
+			
 		}
 		catch(Exception e)
-		{}
-		return value;
+		{e.printStackTrace();}
+	}
+	public static String getPropertyValue(String key)
+	{
+		return configProperies.getProperty(key);
 	}
 
 }
