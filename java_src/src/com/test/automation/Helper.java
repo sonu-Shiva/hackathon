@@ -9,13 +9,14 @@ public class Helper implements Constants {
 	public Connection controller(){
         System.out.println("in helper");
 		try {
-		Class.forName(Property.getPropertyValue(configPptPath,"DBDRIVER"));
+		Class.forName(Property.getPropertyValue("DBDRIVER"));
 		} catch (ClassNotFoundException e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 		}
 		try {
-		c = DriverManager.getConnection(Property.getPropertyValue(configPptPath,"DBURL"),Property.getPropertyValue(configPptPath,"DBUN"),Property.getPropertyValue(configPptPath,"DBPWD"));
+		c = DriverManager.getConnection(Property.getPropertyValue("DBURL"),Property.getPropertyValue("DBUN"),Property.getPropertyValue("DBPWD"));
+		
 		System.out.println("connection successfully established "+c);
 		}
 		catch (SQLException e) {

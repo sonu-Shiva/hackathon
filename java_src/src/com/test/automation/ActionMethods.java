@@ -17,6 +17,7 @@ import com.relevantcodes.extentreports.LogStatus;
 
 
 public class ActionMethods {
+   
 	public static void clickit(WebDriver driver,String action,String locatorName,String locatorData,ExtentTest testReport){
 		try {
 			WebDriverWait wait=new WebDriverWait(driver,60);
@@ -129,8 +130,8 @@ public class ActionMethods {
 			driver.get(testdata);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Not able to enter URL"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
-			testReport.log(LogStatus.FAIL,e.getMessage().toString());
+			testReport.log(LogStatus.FAIL,"Not able to enter URL");
+			testReport.log(LogStatus.FAIL,e.getMessage().toString()+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
 			e.printStackTrace();
 			return;
 		}

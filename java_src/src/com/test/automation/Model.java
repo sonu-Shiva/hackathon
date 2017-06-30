@@ -18,9 +18,10 @@ import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
 
-public class Model implements Constants{
+public class Model{
 public static File file;
 public synchronized static void triggerSelenium(String ucid,String browser){
+	
 	System.out.println("in model");
     Statement st=null;
     Statement st1=null;
@@ -29,19 +30,18 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 	ResultSet rs1=null;
 	String usecaseName=null;
 	WebDriver driver=null;
-	
 	ExtentReports eReport = null;
 	ExtentTest testReport;
 	
-	if(browser.equalsIgnoreCase("firefox")){
-		driver = new FirefoxDriver();
+    if(browser.equalsIgnoreCase("firefox")){
+	driver = new FirefoxDriver();
 	}
 	else if(browser.equalsIgnoreCase("ie")){
-		System.setProperty("webdriver.ie.driver",Property.getPropertyValue(configPptPath,"IEDRIVERPATH") );
+		System.setProperty("webdriver.ie.driver",Property.getPropertyValue("IEDRIVERPATH"));
 		driver = new InternetExplorerDriver();
 	}
 	else if(browser.equalsIgnoreCase("Chrome")){
-		System.setProperty("webdriver.chrome.driver",Property.getPropertyValue(configPptPath,"CHROMEDRIVERPATH") );
+		System.setProperty("webdriver.chrome.driver",Property.getPropertyValue("CHROMEDRIVERPATH"));
 		driver = new ChromeDriver();
 	}
 	
@@ -56,8 +56,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 		for(String id:ucidl){
 		int usecase_id=Integer.parseInt(id);
 		st1=c.createStatement();
-		String query1 = "SELECT use_case_name FROM public.\"UseCase\" Where id="+usecase_id+"; ";//rmove prod id bcs usecase id is enough
-		System.out.println("after connection1");
+		String query1 = "SELECT use_case_name FROM test_cases_usecase Where id="+usecase_id+"; ";//rmove prod id bcs usecase id is enough
 	    rs1=st1.executeQuery(query1);
 	    while(rs1.next()){
 	    	usecaseName=rs1.getString("use_case_name");
@@ -67,29 +66,26 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 		String dateVar = new Model().getDateTime();
 		System.out.println(dateVar);
 		
-		file = new File(Property.getPropertyValue(configPptPath,"REPORTFOLDER")+dateVar+usecase_id);
+		file = new File(Property.getPropertyValue("REPORTFOLDER")+dateVar+usecase_id);
 		file.mkdir();
 		
-		eReport=new ExtentReports(Property.getPropertyValue(configPptPath,"REPORTFOLDER")+dateVar+usecase_id+"//"+usecaseName+usecase_id+".html");
+		eReport=new ExtentReports(Property.getPropertyValue("REPORTFOLDER")+dateVar+usecase_id+"//"+usecaseName+usecase_id+".html");
 
-		path=Property.getPropertyValue(configPptPath,"REPORTFOLDER")+dateVar+usecase_id+"//"+usecaseName+usecase_id+".html";
+		path=Property.getPropertyValue("REPORTFOLDER")+dateVar+usecase_id+"//"+usecaseName+usecase_id+".html";
 		testReport=eReport.startTest(usecaseName);
 		
-		 System.out.println("after connection");//SELECT usecase_id, description, action, locators, element_identifier, element_value, seq_id FROM public.\"Actions_Table\"  ORDER BY SEQ_ID;"
-	    	st=c.createStatement(); //
-	    	String query = "Select description,action,locators,element_identifier,element_value from action where id="+usecase_id+" Order by seq";
+	    	st=c.createStatement(); 
+	    	String query = "Select description,action,locators,element_identifier,element_value from test_cases_action where use_case_id="+usecase_id+" Order by seq";
 	    	System.out.println("after connection1");
 	    	rs = st.executeQuery(query);
 	    	
-//	     	System.setProperty("webdriver.chrome.driver","C://Users//sandeepraju//Desktop//Workplace//CodeLessAutomation//Drivers//chromedriver.exe");
-//			driver = new ChromeDriver();
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS) ;
 			
 			
 			ActionClass ac=new ActionClass();
 			while(rs.next()){
-				System.out.println("after connection1");
+				
 				String desc=rs.getString("description");
 				String action=rs.getString("action");
 				String locators=rs.getString("locators");
@@ -99,7 +95,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 				String msg=desc+action+locators+locatorName+testData;
 				testReport.log(LogStatus.INFO,msg);
 				ac.callActionMethods(driver,action,locators,locatorName,testData,c,testReport);
-				System.out.println("going out of while loop");
+				
 				
 			}
 			eReport.flush(); 
@@ -110,6 +106,17 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 	}
 	 
      finally{
+    	 try {
+     		// putting file pathe to db
+     		
+ 			 st2=c.createStatement();
+ 			 String query2="INSERT INTO test_cases_reports (report,use_case_id) VALUES (" + path + "," + usecaseName + ");";                     
+ 	  		 st2.executeQuery(query2);
+ 		} catch (SQLException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
+    	 
     	 if(c!=null){
     		 try {
 				c.close();
@@ -134,20 +141,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 					e.printStackTrace();
 				}
     	 }
-    	 System.out.println("in finally");
     	 
-    	 try {
-    		// putting file pathe to db
-    		
-			st2=c.createStatement();
-			 String query2="INSERT INTO public.\"reports\"(report,usecase) VALUES ("+path+","+usecaseName+");";                     
-	  		 st2.executeQuery(query2);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-  		
-    	 System.out.println("out finally");
      }
      
    
