@@ -1,4 +1,4 @@
-"""hackathon_django URL Configuration.
+"""hakuna_matata URL Configuration.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
@@ -19,5 +19,6 @@ from django.conf.urls import include
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^hakuna-matata/', include('test_cases.urls', namespace="hakuna_matata")),
+    url(r'^hakuna-matata/', include('qa_app.urls', namespace="hakuna_matata")),
+    url(r'^$', include('qa_app.urls', namespace="hakuna_matata")),
 ]
