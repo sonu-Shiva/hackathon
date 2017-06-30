@@ -54,7 +54,7 @@ $(document).ready(function(){
     $('.actions-formset').formset({
         prefix: prefix,
         addText: '<button type="button" class="btn btn-primary" id="id_' + prefix + '"><i class="fa fa-plus" aria-hidden="true"> Add Action</i></button>',
-        deleteText: '<i class="fa fa-trash font-size-25" aria-hidden="true"></i>',
+        deleteText: '<i class="fa fa-trash font-size-25 padding-top-5" aria-hidden="true"></i>',
         addClass: 'add-row',
         added: onAddEvent,
         removed: onDeleteEvent
