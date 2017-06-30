@@ -9,7 +9,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('test_cases', '0006_auto_20170628_0648'),
+        ('qa_app', '0006_auto_20170628_0648'),
     ]
 
     operations = [
@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='test_cases.Project')),
+                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='qa_app.Project')),
             ],
             options={
                 'ordering': ['name', 'project__name'],
@@ -27,6 +27,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='usecase',
             name='job',
-            field=models.ManyToManyField(to='test_cases.Jobs'),
+            field=models.ManyToManyField(to='qa_app.Jobs'),
         ),
     ]

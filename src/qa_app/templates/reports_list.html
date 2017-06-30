@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container">
+      <div class="row">
+          {% if usecases %}
+           <div class="col-sm-6">
+             <h2>Availble Test Cases</h2>
+              <button type="button" class="btn btn-primary button-link" align='center'><a class="btn-primary" href="{% url 'hakuna_matata:projects' %}">Go Back</a></button>
+
+            <div class="panel-body row">
+             <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Test Case Name</th>
+                      <th>Reports</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for usecase in usecases %}
+                    <tr>
+                        <td>{{usecase.use_case_name}}</td>
+                        <td>
+                          <button type="button" class="btn btn-primary button-link"><a class="btn-primary" href="{% url 'hakuna_matata:report' usecase.id %}">View Report</a></button>
+                        </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+            </div>
+           </div>
+          {% else %}
+          <div class="col-sm-6">
+            <h2>Sorry!!! , No Reports</h2>
+            <button type="button" class="btn btn-primary button-link" align='center'><a class="btn-primary" href="{% url 'hakuna_matata:projects' %}">Go Back</a></button>
+          </div>
+          {% endif %}
+      </div>
+</div>
+{% endblock body %}

@@ -38,12 +38,12 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('use_case_name', models.CharField(max_length=255, verbose_name='Use Case Name')),
                 ('use_case_description', models.TextField(blank=True, help_text='A short description of your Use Case', verbose_name='Use Case Description')),
-                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='test_cases.Project')),
+                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='qa_app.Project')),
             ],
         ),
         migrations.AddField(
             model_name='action',
             name='use_case',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='test_cases.UseCase'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='qa_app.UseCase'),
         ),
     ]

@@ -21,7 +21,7 @@ class Project(models.Model):
 
 
 class Jobs(models.Model):
-    """Projects model class."""
+    """Jobs model class."""
 
     name = models.CharField(blank=False, max_length=255)
     project = models.ForeignKey(Project)

@@ -5,6 +5,7 @@
         {% csrf_token %}
         <div class="padding-left-15">
             <h1>Job: {{ job_name }}</h1>
+            <button type="button" class="btn btn-primary button-link" align='center'><a class="btn-primary" href="{% url 'hakuna_matata:usecases' project_id %}">Go Back</a></button>
         </div>
 
         <div class="panel-body row">

@@ -27,11 +27,11 @@ def project_view(request):
 def reports_view(request, project_id):
     """Report screen views."""
     try:
-        test_cases = UseCase.objects.filter(project__id=project_id)
+        usecases = UseCase.objects.filter(project__id=project_id)
     except Reports.DoesNotExist:
         return HttpResponse(500)
     context = {
-        "test_cases": test_cases,
+        "usecases": usecases,
     }
     return render(request, "reports_list.html", context)
 
