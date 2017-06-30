@@ -26,12 +26,12 @@
                     <tbody class="data-items" id="sortable">
                         {% for action in actions_form %}
                             <tr class="actions-formset">
-                                <td>{{ action.hidden_id }} {{ action.seq }}</td>
-                                <td>{{ action.description }}</td>
-                                <td>{{ action.action }}</td>
-                                <td>{{ action.locators }}</td>
-                                <td>{{ action.element_identifier }}</td>
-                                <td>{{ action.element_value }}</td>
+                                <td class="inputbox  seq-inputbox">{{ action.hidden_id }} {{ action.seq }}</td>
+                                <td class="textarea">{{ action.description }}</td>
+                                <td class="selectbox">{{ action.action }}</td>
+                                <td class="selectbox">{{ action.locators }}</td>
+                                <td class="inputbox custom-inputbox">{{ action.element_identifier }}</td>
+                                <td class="inputbox custom-inputbox">{{ action.element_value }}</td>
                                 <td class="dont-move"></td>
                             </tr>
                         {% endfor %}

@@ -31,7 +31,7 @@
                                     <label><a href="{% url 'hakuna_matata:actions' project_id usecase.id %}"> {{ usecase.use_case_name }}</a></label>
                                 </td>
                                 <td class="width-20">
-                                    <button type="button" class="btn btn-primary" align='center'><a class="btn-primary individual_uc" href="{{ url }}?usecase_id={{ usecase.id }}" target='_blank'>Run</a></button>
+                                    <button type="button" class="btn btn-primary button-link" align='center'><a class="btn-primary individual_uc" href="{{ url }}?usecase_id={{ usecase.id }}" target='_blank'>Run</a></button>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -50,7 +50,7 @@
                         </ul>
                     </div>
 
-                    <div class="browser">
+                    <div class="browser selectbox">
                         <label for="id_browser_usecases">Select the browser in which the usecases need to be run.</label>
                         <br />
                         <select name="browser" id="id_browser_usecases">
@@ -60,7 +60,7 @@
                         </select>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" align='center'><a class="btn-primary" id="id_run_multiple_ucs" href="#" target='_blank'>Run Selected Usecases</a></button>
+                <button type="button" class="btn btn-primary button-link" align='center'><a class="btn-primary" id="id_run_multiple_ucs" href="#" target='_blank'>Run Selected Usecases</a></button>
 
                 <button type="button" id="id_delete_usecase_btn" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal">Delete Selected Usecases</button>
                 {# Model Begins #}
@@ -109,8 +109,8 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>{{ usecase_form.use_case_name }}</td>
-                                            <td>{{ usecase_form.use_case_description }}</td>
+                                            <td class="inputbox">{{ usecase_form.use_case_name }}</td>
+                                            <td class="textarea">{{ usecase_form.use_case_description }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -151,7 +151,7 @@
                                     <label><a href="{% url 'hakuna_matata:job' project_id job.id %}"> {{ job.name }}</a></label>
                                 </td>
                                 <td class="width-20">
-                                    <button type="button" class="btn btn-primary" align='center'><a class="btn-primary" href="{{ url }}?job_id={{ job.id }}" target='_blank'>Run</a></button>
+                                    <button type="button" class="btn btn-primary button-link" align='center'><a class="btn-primary" href="{{ url }}?job_id={{ job.id }}" target='_blank'>Run</a></button>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -171,7 +171,7 @@
                         </ul>
                     </div>
 
-                    <div class="browser">
+                    <div class="browser selectbox">
                         <label for="id_browser_jobs">Select the browser in which the jobs need to be run.</label>
                         <br />
                         <select name="browser" id="id_browser_jobs">
@@ -198,9 +198,9 @@
                         <div class="modal-body">
                             <form action="{% url 'hakuna_matata:add_jobs' project_id %}" method="POST">
                                 {% csrf_token %}
-
-                                {{ jobs_form.as_p }}
-
+                                <div class="inputbox">
+                                    {{ jobs_form.as_p }}
+                                </div>
                                 <button type="submit" class="btn btn-default">Save</button>
                             </form>
                         </div>

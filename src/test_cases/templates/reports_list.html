@@ -15,8 +15,9 @@
                   <tbody>
                   {% for test_case in test_cases %}
                     <tr>
-                        <td>{{test_case.use_case_name}}</a></td>
-                        <td><a href="{% url 'hakuna_matata:report' test_case.id %}">View Report</a>
+                        <td>{{test_case.use_case_name}}</td>
+                        <td>
+                          <button type="button" class="btn btn-primary button-link"><a class="btn-primary" href="{% url 'hakuna_matata:report' test_case.id %}">View Report</a></button>
                         </td>
                     </tr>
                   {% endfor %}

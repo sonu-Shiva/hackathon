@@ -5,7 +5,7 @@
       <div class="row">
         {% if projects %}
            <div class="col-sm-6">
-             <h2>Availble Projects</h2><br />
+             <h2>Available Projects</h2><br />
              <table class="table">
                   <thead>
                     <tr>
@@ -17,10 +17,11 @@
                   {% for project in projects %}
                     <tr>
                         <td><a href="{% url 'hakuna_matata:usecases' project.id %}">{{project.name}}</a></td>
-                        <td><a href="{% url 'hakuna_matata:reports' project.id %}">View</a>
-                        <div id='delete-button' data-toggle="modal" data-target="#removeProdModal">
-                              <img src="{% static 'images/remove.svg' %}" class="img-rounded" alt="Cinque Terre" hight="30px" width="30px">
+                        <td><button type='button' class="btn btn-primary button-link"><a class="btn-primary" href="{% url 'hakuna_matata:reports' project.id %}">View</a></button>
+                        <div id='delete-button'>
+                          <button type="button" id="id_delete_usecase_btn" class="btn fa-delete-button" data-toggle="modal" data-target="#removeProdModal"><i class="fa fa-trash font-size-25" aria-hidden="true"></i></button>
                         </div>
+
                         <div id="removeProdModal" class="modal fade" role="dialog">
                           <div class="modal-dialog">
                             <!-- Modal content-->
@@ -65,8 +66,10 @@
             <div class="modal-body">
             <form action="{% url 'hakuna_matata:add_project' %}" method="POST">
               {% csrf_token %}
-                {{ form.as_p }}
-               <button type="submit" class="btn btn-default" >Save</button>
+                <div class="inputbox">
+                  {{ form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-default" >Save</button>
             </form>
             </div>
           </div>
