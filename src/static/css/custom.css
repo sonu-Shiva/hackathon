@@ -1,42 +1,91 @@
-html, body
-{
+html, body {
     height: 100%;
 }
-.frame
-{
+
+body {
+    background-color: #FFFFFF;
+}
+
+.navbar-brand {
+    position: relative;
+    bottom: -15px;
+}
+
+.frame {
     padding-top: 100px;
 }
-.font-size-25
-{
+
+.font-size-25 {
     font-size: 25px !important;
 }
-.project
-{
+
+.project {
     padding-top: 5%;
 }
-.use_case
-{
+
+.use_case {
     padding-top: 2%;
     padding-left: 9%;
 }
-.padding-left-15
-{
+
+.padding-left-15 {
     padding-left: 15px;
 }
-.padding-top-15
-{
+
+.padding-top-15 {
     padding-top: 15px;
 }
-.padding-bottom-15
-{
+
+.padding-bottom-15 {
     padding-top: 15px;
 }
-.container
-{
+
+.margin-bottom-15 {
+    margin-bottom: 15px;
+}
+
+.container {
     margin: 0 auto;
     height: 100%;
 }
-.main-heading
-{
+
+.main-heading {
     text-align: center;
+}
+
+#delete-button {
+    position: relative;
+    left: 50px;
+    bottom: -4px;
+    display: inline;
+}
+
+textarea {
+    height: 5vw;
+    border-radius: 3px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.ul-li-styles > ul {
+    padding-left: 0px;
+}
+
+.ul-li-styles > ul > li {
+    display: inline;
+    padding-right: 15px;
+}
+
+.ul-li-styles > ul > li > label{
+    font-weight: normal;
+}
+
+.usecase-table, .job-table {
+    width: 60%;
+}
+
+.width-20 {
+    width: 20%;
 }
