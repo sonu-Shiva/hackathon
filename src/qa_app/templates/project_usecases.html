@@ -156,6 +156,28 @@
                                 <td class="width-20">
                                     <button type="button" class="btn btn-primary button-link" align='center'><a class="btn-primary" href="{{ url }}?job_id={{ job.id }}" target='_blank'>Run</a></button>
                                 </td>
+                                <td>
+                                    <button type="button" id="id_delete_project_btn" class="btn fa-delete-button" data-toggle="modal" data-target="#deleteJobModal"><i class="fa fa-trash font-size-25" aria-hidden="true"></i></button>
+                                    {# Model Begins #}
+                                    <div id="deleteJobModal" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body align-center">
+                                                    <p id="remove-product-text">Do you want to delete selected Usecases?</p>
+                                                </div>
+                                                <div class="modal-footer align-center">
+                                                    <form action="{% url 'hakuna_matata:delete_job' project_id job.id %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" id= "id_deleted_usecases" name="deleted_usecases" value="">
+                                                        <button type="submit" class="btn footer-filled-btn">Yes</button>
+                                                        <button type="cancel" class="btn IR-status-btn" data-dismiss="modal">No</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {# Model Ends #}
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

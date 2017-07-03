@@ -3,7 +3,7 @@ $(document).ready(function(){
     $( "#sortable" ).sortable({
         revert: true,
         items: 'tr.actions-formset',
-        stop: function(event, ui){ rearrageSequenceNumbers(ui.item); }
+        stop: function(event, ui){ rearrageSequenceNumbers(ui.item, 'actions-formset'); }
     }).disableSelection();
 
     // Disabling sort on delete button.
@@ -59,6 +59,22 @@ $(document).ready(function(){
         added: onAddEvent,
         removed: onDeleteEvent
     });
+
+    // Dragging Feature.
+    $( "#sortable" ).sortable({
+        revert: true,
+        items: 'tr.job-usecase',
+        stop: function(event, ui){ rearrageSequenceNumbers(ui.item, 'job-usecase'); }
+    }).disableSelection();
+
+    $(document).on('click', '#id_job_usecases_btn', function(){
+        var undeleted_usecases = $('input[id^=id_job_usecase_ck_]:not(:checked)');
+        var number_of_usecases = $(undeleted_usecases).length;
+        $($(undeleted_usecases).get().reverse()).each(function(){
+            $(this).parent('td').find('input[type=hidden][id^=id_job_usecase-]').val(number_of_usecases);
+            number_of_usecases -= 1;
+        });
+    });
 })
 
 function openInNewTab(url) {
@@ -107,7 +123,7 @@ function selectUnselectAll(parentCheckboxClass, childCheckboxesClass) {
     });
 }
 
-function rearrageSequenceNumbers(ele) {
+function rearrageSequenceNumbers(ele, parentClass) {
     var current = parseInt($(ele).find('input[id$=-seq]').val());
     var above = $(ele).prev().find('input[id$=-seq]').val();
     var below = $(ele).next().find('input[id$=-seq]').val();
@@ -117,7 +133,7 @@ function rearrageSequenceNumbers(ele) {
 
     if ( below && below < current) {
         if ( below < current ) {
-            $('tr.actions-formset:visible:nth-child(n+' + below + ')').each(function(){
+            $('tr.' + parentClass + ':visible:nth-child(n+' + below + ')').each(function(){
                 if ( parseInt($(this).find('input[id$=-seq]').val()) <= current ) {
                     $(this).find('input[id$=-seq]').val(below);
                     below += 1;
@@ -128,7 +144,7 @@ function rearrageSequenceNumbers(ele) {
         }
     } else if ( above && above > current) {
         if ( above > current ) {
-            $($('tr.actions-formset:visible:not(:nth-child(n+' + (above + 1) + '))').get().reverse()).each(function(){
+            $($('tr.' + parentClass + ':visible:not(:nth-child(n+' + (above + 1) + '))').get().reverse()).each(function(){
                 if ( parseInt($(this).find('input[id$=-seq]').val()) > current - 1 ) {
                     $(this).find('input[id$=-seq]').val(above);
                     above -= 1;
