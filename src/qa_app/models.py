@@ -42,7 +42,7 @@ class UseCase(models.Model):
     project = models.ForeignKey(Project)
     use_case_name = models.CharField(max_length=255, blank=False, verbose_name='Use Case Name')
     use_case_description = models.TextField(blank=True, verbose_name='Use Case Description', help_text='A short description of your Use Case')
-    job = models.ManyToManyField(Jobs)
+    jobs = models.ManyToManyField(Jobs, through='JobUseCases')
 
     class Meta:
         """Meta Data."""
@@ -52,6 +52,19 @@ class UseCase(models.Model):
     def __str__(self):
         """String representation of the model."""
         return "%s - %s" % (self.project.name, self.use_case_name)
+
+
+class JobUseCases(models.Model):
+    """JobUseCases model class."""
+
+    usecase = models.ForeignKey(UseCase, on_delete=models.CASCADE)
+    job = models.ForeignKey(Jobs, on_delete=models.CASCADE)
+    seq = models.IntegerField(blank=False, null=True)
+
+    class Meta:
+        """Meta Data."""
+
+        ordering = ['job__name', 'seq']
 
 
 class Action(models.Model):

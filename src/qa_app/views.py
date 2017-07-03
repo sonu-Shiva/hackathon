@@ -2,13 +2,15 @@
 
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+import re
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.forms import formset_factory
 from django.conf import settings
-from .models import Project, Reports, UseCase, Action, Jobs
+from .models import Project, Reports, UseCase, Action, Jobs, JobUseCases
 from .forms import ActionsFormset, ProjectForm, UsecaseForm, JobsForm
 from functools import partial, wraps
 
@@ -26,10 +28,7 @@ def project_view(request):
 
 def reports_view(request, project_id):
     """Report screen views."""
-    try:
-        usecases = UseCase.objects.filter(project__id=project_id)
-    except Reports.DoesNotExist:
-        return HttpResponse(500)
+    usecases = UseCase.objects.filter(project__id=project_id)
     context = {
         "usecases": usecases,
     }
@@ -38,11 +37,8 @@ def reports_view(request, project_id):
 
 def render_report(request, report_id):
     """Show reports views."""
-    try:
-        report = Reports.objects.get(use_case_id=report_id).report
-    except Reports.DoesNotExist:
-        return HttpResponse(500)
-    return render(request, report)
+    report_obj = get_object_or_404(Reports, pk=report_id)
+    return render(request, report_obj.report)
 
 
 def add_project(request):
@@ -121,18 +117,61 @@ def add_jobs_view(request, project_id):
 
 def job_view(request, project_id, job_id):
     """Job screen View."""
-    try:
-        job_name = Jobs.objects.get(id=job_id).name
-    except Jobs.DoesNotExist:
-        return HttpResponse(500)
-
+    job_obj = get_object_or_404(Jobs, pk=job_id)
     if request.method == 'GET':
+        usecases_in_job = JobUseCases.objects.filter(job=job_obj).order_by('seq')
+        existing_usecases = []
+        if usecases_in_job:
+            existing_usecases = usecases_in_job.values('usecase_id')
+        usecases_not_in_job = UseCase.objects.filter(project__id=project_id).exclude(id__in=existing_usecases).order_by('id')
         context = {
             'project_id': project_id,
             'job_id': job_id,
-            'job_name': job_name
+            'job_name': job_obj.name,
+            'usecases_in_job': usecases_in_job,
+            'job_has_usecases': bool(usecases_in_job),
+            'project_has_usecases': bool(usecases_not_in_job),
+            'usecases_not_in_job': usecases_not_in_job
         }
         return render(request, 'job.html', context)
+    elif request.method == 'POST':
+        usecases_to_add = [int(request.POST[key]) for key in request.POST if key.startswith('usecase_')]
+        number_of_usecas_in_job = JobUseCases.objects.filter(job=job_obj).count()
+        for seq, usecase_id in enumerate(usecases_to_add):
+            try:
+                usecase_obj = UseCase.objects.get(id=usecase_id)
+            except UseCase.DoesNotExist:
+                pass  # Add rest of the usecases to the job even if some of them fail.
+            else:
+                JobUseCases.objects.create(usecase=usecase_obj, job=job_obj, seq=seq + number_of_usecas_in_job + 1)
+        return HttpResponseRedirect(reverse_lazy('hakuna_matata:job', kwargs={'project_id': project_id, 'job_id': job_id}))
+
+
+def delete_job_usecases_view(request, project_id, job_id):
+    """View to delete the usecases in a job."""
+    job_obj = get_object_or_404(Jobs, pk=job_id)
+    usecase_sequences = list(set([re.search("(job_usecase-\d+-seq)", x).group(0) for x in request.POST.keys() if re.search("job_usecase-\d+-seq", x)]))
+    usecase_sequences.sort(key=lambda name: [int(number) for number in re.findall('\d+', name)])
+    usecases_to_delete = [int(request.POST[key]) for key in request.POST if key.startswith('job_usecase_')]
+    job_usecacses = JobUseCases.objects.filter(job=job_obj).order_by('usecase_id')
+    for job_usecase_obj, usecase_sequence in zip(job_usecacses, usecase_sequences):
+        try:
+            usecase_obj = UseCase.objects.get(id=job_usecase_obj.usecase_id)
+        except UseCase.DoesNotExist:
+            pass  # Usecase itself must have been deleted.
+        else:
+            if job_usecase_obj.usecase_id in usecases_to_delete:
+                JobUseCases.objects.get(usecase=usecase_obj, job=job_obj).delete()
+            else:
+                JobUseCases.objects.filter(usecase=usecase_obj, job=job_obj).update(seq=request.POST[usecase_sequence])
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:job', kwargs={'project_id': project_id, 'job_id': job_id}))
+
+
+def delete_job_view(request, project_id, job_id):
+    """Remove project."""
+    delete_job = get_object_or_404(Jobs, pk=job_id)
+    delete_job.delete()
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:usecases', kwargs={'project_id': project_id}))
 
 
 def actions_view(request, project_id, usecase_id):
