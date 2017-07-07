@@ -73,7 +73,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 		try {
 			stmt2=c.createStatement();
 			System.out.println(useCaseSplit[1]);
-	        String ucQuery="select usecase_id from qa_app_jobusecases where job_id="+useCaseSplit[1]+";";
+	        String ucQuery="select usecase_id from test_cases_jobusecases where job_id="+useCaseSplit[1]+";";
 	        rs2=stmt2.executeQuery(ucQuery);
 	        int count=0;
 	        System.out.println(rs2);
@@ -93,7 +93,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 		for(String id:ucidl){
 			usecase_id=Integer.parseInt(id);
 		stmt1=c.createStatement();
-		String query1 = "SELECT use_case_name FROM qa_app_usecase Where id="+usecase_id+"; ";
+		String query1 = "SELECT use_case_name FROM test_cases_usecase Where id="+usecase_id+"; ";
 	    rs1=stmt1.executeQuery(query1);
 	   
 	    while(rs1.next()){
@@ -114,7 +114,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 		testReport=eReport.startTest(useCaseName);
 		    
 	    	stmt=c.createStatement(); 
-	    	String query = "Select description,action,locators,element_identifier,element_value from qa_app_action where use_case_id="+usecase_id+" Order by seq";
+	    	String query = "Select description,action,locators,element_identifier,element_value from test_cases_action where use_case_id="+usecase_id+" Order by seq";
 	    	
 	    	rs = stmt.executeQuery(query);
 	    	
@@ -147,7 +147,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
     	 try {
      		// inserting file pathe, usecase id and timstamp to db
     		 driver.close();
- 			 pStmt=c.prepareStatement("INSERT INTO qa_app_reports (report,use_case_id,time) VALUES (?,?,?)");
+ 			 pStmt=c.prepareStatement("INSERT INTO test_cases_reports (report,use_case_id,time) VALUES (?,?,?)");
  			 pStmt.setString(1,path);
  			 pStmt.setInt(2,usecase_id);
  			 pStmt.setString(3,dateVar); 
