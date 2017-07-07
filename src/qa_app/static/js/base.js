@@ -1,13 +1,13 @@
 $(document).ready(function(){
     // Dragging Feature.
-    $( "#sortable" ).sortable({
+    $( "#sortable_actions" ).sortable({
         revert: true,
         items: 'tr.actions-formset',
         stop: function(event, ui){ rearrageSequenceNumbers(ui.item, 'actions-formset'); }
     }).disableSelection();
 
     // Disabling sort on delete button.
-    $('#sortable td.dont-move').mousedown(function(event){
+    $('#sortable_actions td.dont-move').mousedown(function(event){
         event.stopImmediatePropagation();
     });
 
@@ -61,7 +61,7 @@ $(document).ready(function(){
     });
 
     // Dragging Feature.
-    $( "#sortable" ).sortable({
+    $( "#sortable_jobs" ).sortable({
         revert: true,
         items: 'tr.job-usecase',
         stop: function(event, ui){ rearrageSequenceNumbers(ui.item, 'job-usecase'); }
