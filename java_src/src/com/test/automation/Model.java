@@ -23,7 +23,7 @@ public class Model{
 public static File file;
 public synchronized static void triggerSelenium(String ucid,String browser){
 	
-	System.out.println("in model");
+	
     Statement stmt=null;
     Statement stmt1=null;
     PreparedStatement pStmt=null;
@@ -68,11 +68,11 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 	   
 	    while(rs1.next()){
 	    	useCaseName=rs1.getString("use_case_name");
-	    	System.out.println(useCaseName);
+	    	
 	    }
 	    
 		dateVar = new Model().getDateTime();
-		System.out.println(dateVar);
+		
 		
 		//for each usecase new folder for reports is created and html report will be present in it
 		file = new File(Property.getPropertyValue("REPORTFOLDER")+dateVar+usecase_id);
@@ -85,7 +85,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 		    
 	    	stmt=c.createStatement(); 
 	    	String query = "Select description,action,locators,element_identifier,element_value from test_cases_action where use_case_id="+usecase_id+" Order by seq";
-	    	System.out.println("after connection1");
+	    	
 	    	rs = stmt.executeQuery(query);
 	    	
 			driver.manage().window().maximize();

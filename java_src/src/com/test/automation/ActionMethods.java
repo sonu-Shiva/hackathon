@@ -110,7 +110,7 @@ public class ActionMethods {
 			List<WebElement> optionsToSelect = autoOptions.findElements(By.tagName(str[2]));
 			for(WebElement option : optionsToSelect){
 		        if(option.getText().equals(lookupValue)) {
-		        	System.out.println("Trying to select: "+lookupValue);
+		        	
 		            option.click();
 		            break;
 		        }
@@ -136,7 +136,7 @@ public class ActionMethods {
 			return;
 		}
 		testReport.log(LogStatus.PASS,"URL entered successfully");
-		System.out.println("In Url method");
+		
 	}
 	
 	public static void loop(WebDriver driver,String action,String locator,String input1,String input2,Connection c,ExtentTest testReport){
@@ -146,7 +146,7 @@ public class ActionMethods {
 		ResultSet rs=null;
 		
 	     try {
-	    	 System.out.println("after connection");
+	    	 
 	    	 for(int i=0;i<Integer.parseInt(input1);i++){
 	    	 st=c.createStatement();
 	    	 String sqlQuery="SELECT usecase_id, description, action, locators, element_identifier, element_value, seq_id FROM public.\"Actions_Table\" WHERE seq_id BETWEEN '"+str[0]+"' AND '"+str[1]+"' ORDER BY SEQ_ID;";
@@ -177,16 +177,16 @@ public class ActionMethods {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
 		WebElement webElement = driver.findElement(new LocatorClass().getLocator(locatorName,locatorData));
 		if(webElement.getText().equals(testdata)){
-			System.out.println("Element is present");
+			
 			testReport.log(LogStatus.PASS,"Element "+testdata+" is present");	
 		}
 		else{
-			System.out.println("Element is not present");
+			
 			testReport.log(LogStatus.FAIL,"Element "+testdata+" is not present"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));	
 		}
 		}
 		catch(Exception e){
-			System.out.println("Invalid LocatorValue");
+			
 			testReport.log(LogStatus.FAIL,"Element is not present or Invalid LocatorValue"+e.getMessage()+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
 			e.printStackTrace();
 			return;

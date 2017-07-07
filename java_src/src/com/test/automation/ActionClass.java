@@ -9,7 +9,7 @@ import com.relevantcodes.extentreports.ExtentTest;
 public class ActionClass {
 	
 	public void callActionMethods(WebDriver driver,String actionName,String locatorName, String locatorData, String testData,Connection c,ExtentTest testReport){
-		System.out.println("In action class");
+		
 		
 		switch(actionName.toUpperCase()){
 		
