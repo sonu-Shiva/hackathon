@@ -1,3 +1,8 @@
 .vagrant/**
+.src/**
+requirnments.txt
+vagrantfile
 *.pyc
 .env
+*.class
+*.properties

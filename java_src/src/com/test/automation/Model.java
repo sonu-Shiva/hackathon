@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -26,15 +28,18 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 	
     Statement stmt=null;
     Statement stmt1=null;
+    Statement stmt2=null;
     PreparedStatement pStmt=null;
 	ResultSet rs=null;
 	ResultSet rs1=null;
+	ResultSet rs2=null;
 	String useCaseName=null;
 	WebDriver driver=null;
 	ExtentReports eReport = null;
 	ExtentTest testReport;
 	String dateVar = null;
 	String path = null;
+	List<String> ucidl=new ArrayList<String>();
 	int usecase_id = 0;
 	
 	//Browser triggereded on browser var value
@@ -56,7 +61,32 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 	
 	//getting usecase id
 	String[] useCaseSplit=ucid.split("=");
-	String[] ucidl=useCaseSplit[1].split(",");
+	
+	if(useCaseSplit[0].equals("usecase_id")){
+		String[] stl=useCaseSplit[1].split(",");
+		 for(int i=0;i<stl.length;i++)
+			 ucidl.add(stl[i]);
+	}
+	
+	if(useCaseSplit[0].equals("job_id")){
+		   //get ucid's form job id and assign to ucidl variable
+		try {
+			stmt2=c.createStatement();
+			System.out.println(useCaseSplit[1]);
+	        String ucQuery="select usecase_id from test_cases_jobusecases where job_id="+useCaseSplit[1]+";";
+	        rs2=stmt2.executeQuery(ucQuery);
+	        int count=0;
+	        System.out.println(rs2);
+	        while(rs2.next()){
+	        	
+	        	System.out.println("usecase id: "+rs2.getString("usecase_id"));
+	        	ucidl.add(Integer.toString(rs2.getInt("usecase_id")));
+		    	count++;
+		    }
+		    } catch (SQLException e) {
+			   e.printStackTrace();
+		    }
+		}
 	
 	//no of usecaseid : no of times selenium performs actions
 	try {
@@ -113,6 +143,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 	}
 	 
      finally{
+    	 ucidl=null;
     	 try {
      		// inserting file pathe, usecase id and timstamp to db
     		 driver.close();
