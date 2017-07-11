@@ -19,10 +19,10 @@
                         <td><a href="{% url 'hakuna_matata:usecases' project.id %}">{{project.name}}</a></td>
                         <td><button type='button' class="btn btn-primary button-link"><a class="btn-primary" href="{% url 'hakuna_matata:reports' project.id %}">View</a></button>
                         <div id='delete-button'>
-                          <button type="button" id="id_delete_project_btn" class="btn fa-delete-button" data-toggle="modal" data-target="#removeProdModal"><i class="fa fa-trash font-size-25" aria-hidden="true"></i></button>
+                          <button type="button" id="id_delete_project_btn" class="btn fa-delete-button" data-toggle="modal" data-target="#removeProdModal{{ project.id }}"><i class="fa fa-trash font-size-25" aria-hidden="true"></i></button>
                         </div>
 
-                        <div id="removeProdModal" class="modal fade" role="dialog">
+                        <div id="removeProdModal{{ project.id }}" class="modal fade" role="dialog">
                           <div class="modal-dialog">
                             <!-- Modal content-->
                             <div class="modal-content">
