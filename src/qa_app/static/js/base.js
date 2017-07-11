@@ -23,6 +23,11 @@ $(document).ready(function(){
         $(this).attr('href', $(this).attr('href') + '&' + browser);
     });
 
+    $(document).on('click', '.run-job', function(){
+        var browser = $('#id_browser_jobs').find(":selected").val();
+        $(this).attr('href', $(this).attr('href') + '&' + browser);
+    });
+
     $(document).on('click', '#id_run_multiple_ucs', function(){
         var id_list = [];
         $(".usecase-ck:checked").each(function(){
