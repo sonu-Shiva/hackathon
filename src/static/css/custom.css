@@ -137,7 +137,7 @@ a:hover, a:visited, a:focus {
     width: 20%;
 }
 
-.fa-delete-button {
+.fa-button-css {
     padding: 0;
     color: #337ab7;
     background: transparent;
@@ -145,7 +145,7 @@ a:hover, a:visited, a:focus {
     border: none;
 }
 
-.fa-delete-button:hover, .fa-delete-button:focus {
+.fa-button-css:hover, .fa-button-css:focus {
     color: #286090;
     outline: none !important;
     border: none;

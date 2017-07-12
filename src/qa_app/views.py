@@ -17,13 +17,21 @@ from functools import partial, wraps
 
 def project_view(request):
     """Project screen views."""
-    projects = Project.objects.all()
-    form = ProjectForm()
-    context = {
-        "projects": projects,
-        "form": form,
-    }
-    return render(request, "index.html", context)
+    if request.method == 'GET':
+        projects = Project.objects.all()
+        form = ProjectForm()
+        project_forms = zip(projects, [ProjectForm(instance=project_obj) for project_obj in projects])
+        context = {
+            'project_forms': project_forms,
+            'form': form,
+        }
+        return render(request, "index.html", context)
+    elif request.method == 'POST':
+        project_id = int(request.POST.get('project_id', None))
+        project_form = ProjectForm(data=request.POST)
+        if project_form.is_valid():
+            Project.objects.filter(id=project_id).update(name=project_form.cleaned_data['name'])
+        return HttpResponseRedirect(reverse_lazy('hakuna_matata:projects'))
 
 
 def reports_view(request, project_id):
@@ -65,21 +73,41 @@ def usecases_view(request, project_id):
         jobs = Jobs.objects.filter(project__id=project_id).order_by('id')
     except (UseCase.DoesNotExist, Project.DoesNotExist):
         return HttpResponse(500)
+    if request.method == 'GET':
+        usecases_form = zip(usecases, [UsecaseForm(instance=usecase) for usecase in usecases])
+        add_usecase_form = UsecaseForm()
+        jobs_form = zip(jobs, [JobsForm(instance=job) for job in jobs])
+        add_jobs_form = JobsForm()
+        context = {
+            'project_id': project_id,
+            'project': project,
+            'usecases': usecases,
+            'usecases_form': usecases_form,
+            'has_usecases': bool(usecases),
+            'url': settings.JAVA_API_URL,
+            'add_usecase_form': add_usecase_form,
+            'add_jobs_form': add_jobs_form,
+            'jobs': jobs,
+            'jobs_form': jobs_form,
+            'has_jobs': bool(jobs),
+        }
+        return render(request, 'project_usecases.html', context)
+    elif request.method == 'POST':
+        usecase_id = request.POST.get('usecase_id', None)
+        usecase_form = UsecaseForm(data=request.POST)
+        if usecase_form.is_valid():
+            UseCase.objects.filter(id=usecase_id).update(
+                use_case_name=usecase_form.cleaned_data['use_case_name'],
+                use_case_description=usecase_form.cleaned_data['use_case_description'],
+            )
 
-    usecase_form = UsecaseForm()
-    jobs_form = JobsForm()
-    context = {
-        'project_id': project_id,
-        'project': project,
-        'usecases': usecases,
-        'has_usecases': bool(usecases),
-        'url': settings.JAVA_API_URL,
-        'usecase_form': usecase_form,
-        'jobs_form': jobs_form,
-        'jobs': jobs,
-        'has_jobs': bool(jobs),
-    }
-    return render(request, 'project_usecases.html', context)
+        job_id = request.POST.get('job_id', None)
+        job_form = JobsForm(data=request.POST)
+        if job_form.is_valid():
+            Jobs.objects.filter(id=job_id).update(
+                name=job_form.cleaned_data['name'],
+            )
+        return HttpResponseRedirect(reverse_lazy('hakuna_matata:usecases', kwargs={'project_id': project_id}))
 
 
 def add_usecases_view(request, project_id):
