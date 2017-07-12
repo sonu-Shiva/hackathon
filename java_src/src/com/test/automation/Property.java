@@ -4,7 +4,7 @@ import java.util.Properties;
 
 public class Property {
 	static Properties configProperies = new Properties();
-	static String filePath = "config.properties";
+	static String filePath = "resource/config.properties";
 	static {
 		
 		try{
