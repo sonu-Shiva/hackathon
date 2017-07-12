@@ -27,11 +27,47 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for usecase in usecases %}
+                        {% for usecase, usecase_form in usecases_form %}
                             <tr>
                                 <td>
                                     <input class="usecase-ck" type="checkbox">
                                     <label><a href="{% url 'hakuna_matata:actions' project_id usecase.id %}"> {{ usecase.use_case_name }}</a></label>
+                                    <button type="button" id="id_delete_project_btn" class="btn fa-button-css" data-toggle="modal" data-target="#editUsecaseModal{{ usecase.id }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+
+                                    <div id="editUsecaseModal{{ usecase.id }}" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Edit Usecase</h4><br />
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{% url 'hakuna_matata:usecases' project_id %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Usecase Name</th>
+                                                                    <th>Description</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="inputbox">{{ usecase_form.use_case_name }}</td>
+                                                                    <td class="textarea">
+                                                                        {{ usecase_form.use_case_description }}
+                                                                        <input type="hidden" name="usecase_id" value="{{ usecase.id }}">
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <button type="submit" class="btn btn-default" >Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="width-20">
                                     <button type="button" class="btn btn-primary button-link" align='center'><a class="btn-primary individual_uc" href="{{ url }}?usecase_id={{ usecase.id }}" target='_blank'>Run</a></button>
@@ -112,8 +148,8 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="inputbox">{{ usecase_form.use_case_name }}</td>
-                                            <td class="textarea">{{ usecase_form.use_case_description }}</td>
+                                            <td class="inputbox">{{ add_usecase_form.use_case_name }}</td>
+                                            <td class="textarea">{{ add_usecase_form.use_case_description }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -148,18 +184,41 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for job in jobs %}
+                        {% for job, job_form in jobs_form %}
                             <tr>
                                 <td>
                                     <label><a href="{% url 'hakuna_matata:job' project_id job.id %}"> {{ job.name }}</a></label>
+                                    <button type="button" id="id_delete_project_btn" class="btn fa-button-css" data-toggle="modal" data-target="#editJobModal{{ job.id }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+
+                                    <div id="editJobModal{{ job.id }}" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Edit Job</h4><br />
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{% url 'hakuna_matata:usecases' project_id %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <div class="inputbox">
+                                                            {{ job_form.as_p }}
+                                                            <input type="hidden" name="job_id" value="{{ job.id }}">
+                                                        </div>
+                                                        <button type="submit" class="btn btn-default" >Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="width-20">
                                     <button type="button" class="btn btn-primary button-link" align='center'><a class="btn-primary run-job" href="{{ url }}?job_id={{ job.id }}" target='_blank'>Run</a></button>
                                 </td>
                                 <td>
-                                    <button type="button" id="id_delete_project_btn" class="btn fa-delete-button" data-toggle="modal" data-target="#deleteJobModal"><i class="fa fa-trash font-size-25" aria-hidden="true"></i></button>
+                                    <button type="button" id="id_delete_project_btn" class="btn fa-button-css" data-toggle="modal" data-target="#deleteJobModal{{ job.id }}"><i class="fa fa-trash font-size-25" aria-hidden="true"></i></button>
                                     {# Model Begins #}
-                                    <div id="deleteJobModal" class="modal fade" role="dialog">
+                                    <div id="deleteJobModal{{ job.id }}" class="modal fade" role="dialog">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-body align-center">
@@ -224,7 +283,7 @@
                             <form action="{% url 'hakuna_matata:add_jobs' project_id %}" method="POST">
                                 {% csrf_token %}
                                 <div class="inputbox">
-                                    {{ jobs_form.as_p }}
+                                    {{ add_jobs_form.as_p }}
                                 </div>
                                 <button type="submit" class="btn btn-default">Save</button>
                             </form>
