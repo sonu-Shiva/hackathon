@@ -7,7 +7,13 @@
   
   <build>
     <sourceDirectory>src</sourceDirectory>
-
+    <resources>
+     <resource>
+                <targetPath>./resource</targetPath>
+                <directory>${basedir}/src/resource</directory>
+                <filtering>false</filtering>
+            </resource>
+      </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
