@@ -1,79 +1,105 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block body %}
-  <div class="container">
-      <div class="row">
-        {% if projects %}
-           <div class="col-sm-6">
-             <h2>Available Projects</h2><br />
-             <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Project Name</th>
-                      <th>Reports</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  {% for project in projects %}
-                    <tr>
-                        <td><a href="{% url 'hakuna_matata:usecases' project.id %}">{{project.name}}</a></td>
-                        <td><button type='button' class="btn btn-primary button-link"><a class="btn-primary" href="{% url 'hakuna_matata:reports' project.id %}">View</a></button>
-                        <div id='delete-button'>
-                          <button type="button" id="id_delete_project_btn" class="btn fa-delete-button" data-toggle="modal" data-target="#removeProdModal"><i class="fa fa-trash font-size-25" aria-hidden="true"></i></button>
-                        </div>
+    <div class="container">
+        <div class="row">
+            {% if project_forms %}
+                <div class="col-sm-6">
+                    <h2>Available Projects</h2><br />
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Reports</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for project, project_form in project_forms %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'hakuna_matata:usecases' project.id %}">{{project.name}}</a>
+                                    <button type="button" id="id_delete_project_btn" class="btn fa-button-css" data-toggle="modal" data-target="#editProdModal{{ project.id }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 
-                        <div id="removeProdModal" class="modal fade" role="dialog">
-                          <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                              <div class="modal-body align-center">
-                                <p id="remove-product-text">Do you want to remove project?</p>
-                              </div>
-                              <div class="modal-footer align-center">
-                                <form action="{% url 'hakuna_matata:remove_project' project.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn footer-filled-btn">Yes</button>
-                                    <button type="cancel" class="btn IR-status-btn" data-dismiss="modal">No</button>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        </td>
+                                    <div id="editProdModal{{ project.id }}" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Edit Project</h4><br />
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{% url 'hakuna_matata:projects' %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <div class="inputbox">
+                                                            <label for="{{ project_form.name.auto_id }}">Project Name: </label>
+                                                            {{ project_form.name }}
+                                                            <input type="hidden" name="project_id" value="{{ project.id }}">
+                                                        </div>
+                                                        <button type="submit" class="btn btn-default" >Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button type='button' class="btn btn-primary button-link"><a class="btn-primary" href="{% url 'hakuna_matata:reports' project.id %}">View</a></button>
 
-                    </tr>
-                  {% endfor %}
-                  </tbody>
-              </table>
-           </div>
-        {% else %}
-          <div class="col-sm-6">
-            <h2>No Projects to Display</h2>
-          </div>
-        {% endif %}
+                                    <div id='delete-button'>
+                                        <button type="button" id="id_delete_project_btn" class="btn fa-button-css" data-toggle="modal" data-target="#removeProdModal"><i class="fa fa-trash font-size-25" aria-hidden="true"></i></button>
+                                    </div>
 
-      </div>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Projects </button>
-      <!-- Modal -->
-      <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Add Project</h4><br />
-            </div>
-            <div class="modal-body">
-            <form action="{% url 'hakuna_matata:add_project' %}" method="POST">
-              {% csrf_token %}
-                <div class="inputbox">
-                  {{ form.as_p }}
+                                    <div id="removeProdModal" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-body align-center">
+                                                    <p id="remove-product-text">Do you want to remove project?</p>
+                                                </div>
+                                                <div class="modal-footer align-center">
+                                                    <form action="{% url 'hakuna_matata:remove_project' project.id %}">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn footer-filled-btn">Yes</button>
+                                                        <button type="cancel" class="btn IR-status-btn" data-dismiss="modal">No</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                 </div>
+            {% else %}
+                <div class="col-sm-6">
+                    <h2>No Projects to Display</h2>
                 </div>
-                <button type="submit" class="btn btn-default" >Save</button>
-            </form>
-            </div>
-          </div>
+            {% endif %}
         </div>
-      </div>
-  </div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Projects </button>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Project</h4><br />
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'hakuna_matata:add_project' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="inputbox">
+                                {{ form.as_p }}
+                            </div>
+                            <button type="submit" class="btn btn-default" >Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock body %}
