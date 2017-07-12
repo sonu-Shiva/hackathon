@@ -154,7 +154,7 @@
                                     <label><a href="{% url 'hakuna_matata:job' project_id job.id %}"> {{ job.name }}</a></label>
                                 </td>
                                 <td class="width-20">
-                                    <button type="button" class="btn btn-primary button-link" align='center'><a class="btn-primary" href="{{ url }}?job_id={{ job.id }}" target='_blank'>Run</a></button>
+                                    <button type="button" class="btn btn-primary button-link" align='center'><a class="btn-primary run-job" href="{{ url }}?job_id={{ job.id }}" target='_blank'>Run</a></button>
                                 </td>
                                 <td>
                                     <button type="button" id="id_delete_project_btn" class="btn fa-delete-button" data-toggle="modal" data-target="#deleteJobModal"><i class="fa fa-trash font-size-25" aria-hidden="true"></i></button>
