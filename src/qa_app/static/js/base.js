@@ -4,7 +4,7 @@ $(document).ready(function(){
         revert: true,
         items: 'tr.actions-formset',
         stop: function(event, ui){ rearrageSequenceNumbers(ui.item, 'actions-formset'); }
-    }).disableSelection();
+    });
 
     // Disabling sort on delete button.
     $('#sortable_actions td.dont-move').mousedown(function(event){
@@ -65,7 +65,7 @@ $(document).ready(function(){
         revert: true,
         items: 'tr.job-usecase',
         stop: function(event, ui){ rearrageSequenceNumbers(ui.item, 'job-usecase'); }
-    }).disableSelection();
+    });
 
     $(document).on('click', '#id_job_usecases_btn', function(){
         var undeleted_usecases = $('input[id^=id_job_usecase_ck_]:not(:checked)');
